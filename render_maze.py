@@ -15,8 +15,10 @@ def get_maze_coords(maze_file: str) -> list[str]:
             while row and row != "\n":
                 maze_coords.append(row.strip())
                 row = file.readline()
+    except FileNotFoundError as e:
+        raise Exception(f"Error: file {maze_file} doesn't exist: {e}")
     except Exception as e:
-        raise Exception(f"Error: {str(e)}")
+        raise Exception(f"Unexpected error reading the file: {str(e)}")
     return maze_coords
 
 
@@ -34,7 +36,7 @@ def get_dimensions() -> dict[str, int]:
                 dims["HEIGHT"] = (int(line_clean.removeprefix("HEIGHT=")))
         if len(dims) < 2:
             raise Exception("Fatal error: No 'WIDTH' "
-                            "or 'HEIGHT' line in the file")
+                            "or 'HEIGHT' line in the file config.txt")
         return dims
 
 
