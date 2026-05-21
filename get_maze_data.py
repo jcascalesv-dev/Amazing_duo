@@ -1,5 +1,10 @@
 from typing import Any
 
+"""
+Función para leer el fichero config y obtener el nombre del fichero
+donde se va a guardar el laberinto.
+"""
+
 
 def get_file_name() -> str:
     with open("config.txt", "r") as file:
@@ -8,6 +13,12 @@ def get_file_name() -> str:
             if line.startswith("OUTPUT_FILE="):
                 return line.strip().removeprefix("OUTPUT_FILE=")
         raise Exception("Fatal error: No 'OUTPUT_FILE' line in the file")
+
+
+"""
+Función para leer el fichero del laberinto y obtener
+las coordenadas para renderizar los muros.
+"""
 
 
 def get_maze_coords(maze_file: str) -> list[str]:
@@ -23,6 +34,12 @@ def get_maze_coords(maze_file: str) -> list[str]:
     except Exception as e:
         raise Exception(f"Unexpected error reading the file: {str(e)}")
     return maze_coords
+
+
+"""
+Función para leer el fichero config y obtener las dimensiones
+del laberinto.
+"""
 
 
 def get_dimensions() -> dict[str, int]:
@@ -41,6 +58,12 @@ def get_dimensions() -> dict[str, int]:
             raise Exception("Fatal error: No 'WIDTH' "
                             "or 'HEIGHT' line in the file config.txt")
         return dims
+
+
+"""
+Función para leer el fichero del laberinto y obtener los puntos de
+inicio y fin y las direcciones para recrear el camino.
+"""
 
 
 def get_way(maze_file: str) -> dict[str, Any]:
@@ -65,20 +88,3 @@ def get_way(maze_file: str) -> dict[str, Any]:
     except Exception as e:
         raise Exception(f"Unexpected error reading the file: {str(e)}")
     return way
-
-
-def main() -> None:
-    try:
-        maze_file: str = (get_file_name())
-        maze_coords: list[str] = get_maze_coords(maze_file)
-        dims = get_dimensions()
-        way: dict[str, Any] = get_way(maze_file)
-        print(maze_coords[0][0])  # compruebo que puedo acceder a cada dígito.
-        print(dims)
-        print(way)
-    except Exception as e:
-        print(e)
-
-
-if __name__ == "__main__":
-    main()

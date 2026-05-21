@@ -1,0 +1,43 @@
+/* XPM */
+static char *wall_xpm[] = {
+/* Ancho Alto Colores CaracterPorPixel */
+"32 32 4 1",
+/* Definimos la paleta de colores */
+"  c #7F0000",  /* Rojo oscuro para el ladrillo */
+". c #A60000",  /* Rojo claro para el brillo */
+"X c #2C2C2C",  /* Gris oscuro para las juntas */
+"o c #1A1A1A",  /* Negro para la sombra de la junta */
+/* Aquí empieza el dibujo de 32x32 píxeles */
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+"X............  oX............  o",
+"X............  oX............  o",
+"X............  oX............  o",
+"X  oooooooooooooX  ooooooooooooo",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+"..........  oX............  oX..",
+"..........  oX............  oX..",
+"..........  oX............  oX..",
+"ooooooooooooX  oooooooooooooX  o",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+"X............  oX............  o",
+"X............  oX............  o",
+"X............  oX............  o",
+"X  oooooooooooooX  ooooooooooooo",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+"..........  oX............  oX..",
+"..........  oX............  oX..",
+"..........  oX............  oX..",
+"ooooooooooooX  oooooooooooooX  o",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+"X............  oX............  o",
+"X............  oX............  o",
+"X............  oX............  o",
+"X  oooooooooooooX  ooooooooooooo",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+"..........  oX............  oX..",
+"..........  oX............  oX..",
+"..........  oX............  oX..",
+"ooooooooooooX  oooooooooooooX  o",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+};
