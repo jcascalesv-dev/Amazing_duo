@@ -1,21 +1,17 @@
 /* XPM */
-static char *wall_north_xpm[] = {
-/* Ancho Alto Colores CaracterPorPixel */
+static char *wall_north_2px[] = {
 "32 32 3 1",
-/* Paleta: Espacio=Vacío/Negro, .=Rojo Ladrillo, X=Sombra Junta */
-"  c None", /* Fondo Negro para el pasillo */
-". c #A60000", /* Rojo clásico de Battle City */
-"X c #1A1A1A", /* Gris oscuro para las juntas */
-/* --- Aquí empiezan las 8 filas de muro macizo --- */
+"  c None",
+". c #A60000",
+"X c #1A1A1A",
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-"X............XX............XX..X",
-"X............XX............XX..X",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-"......XX............XX..........",
-"......XX............XX..........",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-/* --- Las 24 filas restantes son espacio libre para caminar --- */
+"X..X  X..X  X..X  X..X  X..X  X.",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
 "                                ",
 "                                ",
 "                                ",

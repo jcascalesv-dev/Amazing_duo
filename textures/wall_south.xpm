@@ -1,5 +1,5 @@
 /* XPM */
-static char *wall_south_xpm[] = {
+static char *wall_south_2px[] = {
 "32 32 3 1",
 "  c None",
 ". c #A60000",
@@ -28,12 +28,12 @@ static char *wall_south_xpm[] = {
 "                                ",
 "                                ",
 "                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-"X............XX............XX..X",
-"X............XX............XX..X",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-"......XX............XX..........",
-"......XX............XX..........",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+"X..X  X..X  X..X  X..X  X..X  X."
 };
