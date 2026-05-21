@@ -7,8 +7,8 @@ def render_maze(
     dims: dict[str, int], maze_coords: list[str], way: dict[str, Any]
 ) -> None:
     # calculamos el tamano de la ventana en pixels
-    screen_width: int = (dims["WIDTH"] * CELL_SIZE) + 64
-    screen_height: int = (dims["HEIGHT"] * CELL_SIZE) + 64
+    screen_width: int = (dims["WIDTH"] * CELL_SIZE) + 128
+    screen_height: int = (dims["HEIGHT"] * CELL_SIZE) + 128
     # Fabricamos nuestro objeto gráfico a partir del plano
     mlx_visual = Mlx()
     # Guardamos el identificador del motor gráfico
