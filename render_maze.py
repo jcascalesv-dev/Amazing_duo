@@ -25,10 +25,13 @@ def get_dimensions() -> dict[str, int]:
         dims: dict[str, int] = {}
         text: list[str] = file.readlines()
         for line in text:
-            if line.startswith("WIDTH="):
-                dims["WIDTH"] = (int(line.strip().removeprefix("WIDTH=")))
-            elif line.startswith("HEIGHT="):
-                dims["HEIGHT"] = (int(line.strip().removeprefix("HEIGHT=")))
+            line_clean = line.strip()
+            if not line_clean or line_clean.startswith("#"):
+                continue
+            if line_clean.startswith("WIDTH="):
+                dims["WIDTH"] = (int(line_clean.removeprefix("WIDTH=")))
+            elif line_clean.startswith("HEIGHT="):
+                dims["HEIGHT"] = (int(line_clean.removeprefix("HEIGHT=")))
         if len(dims) < 2:
             raise Exception("Fatal error: No 'WIDTH' "
                             "or 'HEIGHT' line in the file")
