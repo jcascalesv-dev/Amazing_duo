@@ -44,4 +44,7 @@ def render_maze(
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
                     mlx_ptr, window_ptr, img_wall, pixel_x, pixel_y
                 )
+    # Llamamos al método de la librería que es un bucle infinito
+    # para evitar que la ventana se cierre tras renderizar el
+    # laberinto y quede a la espera.
     mlx_visual.mlx_loop(mlx_ptr)  # type: ignore
