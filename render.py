@@ -1,38 +1,67 @@
 from typing import Any
+from mlx import Mlx
+CELL_SIZE = 32  # constante para el tamano de las texturas en pixels
 
 
 def render_maze(
     dims: dict[str, int], maze_coords: list[str], way: dict[str, Any]
 ) -> None:
-    print("\n--- RENDERIZADO ASCII DEL LABERINTO ---")
-    for row in maze_coords:
-        top_line = ""
-        mid_line = ""
-        for digit in row:
+    # calculamos el tamano de la ventana en pixels
+    screen_width: int = dims["WIDTH"] * CELL_SIZE
+    screen_height: int = dims["HEIGHT"] * CELL_SIZE
+    # Fabricamos nuestro objeto gráfico a partir del plano
+    mlx_visual = Mlx()
+    # Guardamos el identificador del motor gráfico
+    mlx_ptr = mlx_visual.mlx_init()
+    # Estamos usando un traductor ya que la librería está hecha en c
+    # pero no tiene tipado así que lo silenciamos.
+    window_ptr: int = mlx_visual.mlx_new_window(  # type: ignore
+        mlx_ptr, screen_width, screen_height, "A-maze-ing!"
+    )
+    # Cargamos la textura para el muro. Descomponemos en 3 variables
+    # pero solo necesitamos la imagen puesto que las medidas ya las tenemos.
+    img_wall_north, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_north.xpm"
+        )
+    img_wall_east, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_east.xpm"
+        )
+    img_wall_south, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_south.xpm"
+        )
+    img_wall_west, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_west.xpm"
+        )
+    for y, row in enumerate(maze_coords):
+        for x, digit in enumerate(row):
             decimal: int = int(digit, 16)
-            # Muro Norte (Bit 0)
-            if decimal & 1:
-                top_line += "+---"
-            else:
-                top_line += "+   "
-            # Muro Oeste (Bit 3)
-            if decimal & 8:
-                mid_line += "|   "
-            else:
-                mid_line += "    "
-        # Cerramos el borde derecho de cada fila (Muro Este de la última celda)
-        last_decimal = int(row[-1], 16)
-        top_line += "+"
-        mid_line += "|" if (last_decimal & 2) else " "
-        print(top_line)
-        print(mid_line)
-    # Dibujamos el muro Sur de la última fila (Bit 2)
-    bottom_line = ""
-    for digit in maze_coords[-1]:
-        if int(digit, 16) & 4:
-            bottom_line += "+---"
-        else:
-            bottom_line += "+   "
-    bottom_line += "+"
-    print(bottom_line)
-    print("---------------------------------------\n")
+            pixel_x = x * CELL_SIZE
+            pixel_y = y * CELL_SIZE
+            # 1. LA LÓGICA ASCII: Solo pintamos Norte y Oeste.
+            # Las vecinas harán el resto.
+            if decimal & 1:  # NORTE
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_wall_north, pixel_x, pixel_y
+                )
+            if decimal & 8:  # OESTE
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_wall_west, pixel_x, pixel_y
+                )
+            # 2. CERRAR LOS BORDES (Igual que el ASCII)
+            # Si es la ÚLTIMA celda de la fila, tenemos que pintar su muro 
+            # Este para cerrar el mapa
+            if x == len(row) - 1 and (decimal & 2):
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_wall_east, pixel_x + CELL_SIZE - 2, pixel_y
+                )
+            # Si es la ÚLTIMA fila del laberinto, tenemos que pintar su muro 
+            # Sur para cerrar el mapa
+            if y == len(maze_coords) - 1 and (decimal & 4):
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_wall_south,
+                    pixel_x, pixel_y + CELL_SIZE - 2
+                )
+    # Llamamos al método de la librería que es un bucle infinito
+    # para evitar que la ventana se cierre tras renderizar el
+    # laberinto y quede a la espera.
+    mlx_visual.mlx_loop(mlx_ptr)  # type: ignore
