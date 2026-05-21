@@ -20,8 +20,17 @@ def render_maze(
     )
     # Cargamos la textura para el muro. Descomponemos en 3 variables
     # pero solo necesitamos la imagen puesto que las medidas ya las tenemos.
-    img_wall, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-        mlx_ptr, "textures/wall.xpm"
+    img_wall_north, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_north.xpm"
+        )
+    img_wall_east, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_east.xpm"
+        )
+    img_wall_south, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_south.xpm"
+        )
+    img_wall_west, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_west.xpm"
         )
     for y, row in enumerate(maze_coords):
         for x, digit in enumerate(row):
@@ -30,19 +39,19 @@ def render_maze(
             pixel_y = y * CELL_SIZE
             if decimal & 1:
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall, pixel_x, pixel_y
+                    mlx_ptr, window_ptr, img_wall_north, pixel_x, pixel_y
                 )
             if decimal & 2:
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall, pixel_x, pixel_y
+                    mlx_ptr, window_ptr, img_wall_east, pixel_x, pixel_y
                 )
             if decimal & 4:
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall, pixel_x, pixel_y
+                    mlx_ptr, window_ptr, img_wall_south, pixel_x, pixel_y
                 )
             if decimal & 8:
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall, pixel_x, pixel_y
+                    mlx_ptr, window_ptr, img_wall_west, pixel_x, pixel_y
                 )
     # Llamamos al método de la librería que es un bucle infinito
     # para evitar que la ventana se cierre tras renderizar el
