@@ -39,7 +39,7 @@ def render_maze(
             pixel_y = y * CELL_SIZE
             if decimal & 1:
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall_north, pixel_x, pixel_y
+                    mlx_ptr, window_ptr, img_wall_south, pixel_x, pixel_y
                 )
             if decimal & 2:
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
@@ -47,7 +47,7 @@ def render_maze(
                 )
             if decimal & 4:
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall_south, pixel_x, pixel_y
+                    mlx_ptr, window_ptr, img_wall_north, pixel_x, pixel_y
                 )
             if decimal & 8:
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
