@@ -40,13 +40,36 @@ def get_dimensions() -> dict[str, int]:
         return dims
 
 
+def get_way(maze_file: str) -> dict[str, tuple[int, ...]]:
+    way: dict[str, tuple[int, ...]] = {}
+    try:
+        with open(maze_file, "r") as file:
+            row: str = file.readline()
+            while row and row != "\n":
+                row = file.readline()
+                continue
+            row = file.readline()
+            if row:
+                way["entrance"] = tuple(int(r) for r in row.strip().split(","))
+            row = file.readline()
+            if row:
+                way["exit"] = tuple(int(r) for r in row.strip().split(","))
+    except FileNotFoundError as e:
+        raise Exception(f"Error: file {maze_file} doesn't exist: {e}")
+    except Exception as e:
+        raise Exception(f"Unexpected error reading the file: {str(e)}")
+    return way
+
+
 def main() -> None:
     try:
         maze_file: str = (get_file_name())
         maze_coords: list[str] = get_maze_coords(maze_file)
         dims = get_dimensions()
+        way: dict[str, tuple[int, ...]] = get_way(maze_file)
         print(maze_coords[0][0])  # compruebo que puedo acceder a cada dígito.
         print(dims)
+        print(way)
     except Exception as e:
         print(e)
 
