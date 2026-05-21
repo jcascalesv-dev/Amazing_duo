@@ -1,3 +1,6 @@
+from typing import Any
+
+
 def get_file_name() -> str:
     with open("config.txt", "r") as file:
         text: list[str] = file.readlines()
@@ -40,8 +43,8 @@ def get_dimensions() -> dict[str, int]:
         return dims
 
 
-def get_way(maze_file: str) -> dict[str, tuple[int, ...]]:
-    way: dict[str, tuple[int, ...]] = {}
+def get_way(maze_file: str) -> dict[str, Any]:
+    way: dict[str, Any] = {}
     try:
         with open(maze_file, "r") as file:
             row: str = file.readline()
@@ -54,6 +57,9 @@ def get_way(maze_file: str) -> dict[str, tuple[int, ...]]:
             row = file.readline()
             if row:
                 way["exit"] = tuple(int(r) for r in row.strip().split(","))
+            row = file.readline()
+            if row:
+                way["directions"] = row.strip()
     except FileNotFoundError as e:
         raise Exception(f"Error: file {maze_file} doesn't exist: {e}")
     except Exception as e:
@@ -66,7 +72,7 @@ def main() -> None:
         maze_file: str = (get_file_name())
         maze_coords: list[str] = get_maze_coords(maze_file)
         dims = get_dimensions()
-        way: dict[str, tuple[int, ...]] = get_way(maze_file)
+        way: dict[str, Any] = get_way(maze_file)
         print(maze_coords[0][0])  # compruebo que puedo acceder a cada dígito.
         print(dims)
         print(way)
