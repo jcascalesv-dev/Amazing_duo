@@ -36,20 +36,22 @@ def render_maze(
         for x, digit in enumerate(row):
             decimal: int = int(digit, 16)
             pixel_x = x * CELL_SIZE
-            pixel_y = (dims["HEIGHT"] - 1 - y) * CELL_SIZE
-            if decimal & 1:
+            pixel_y = y * CELL_SIZE
+            if decimal & 1:  # NORTE (Se pinta arriba del todo)
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
                     mlx_ptr, window_ptr, img_wall_north, pixel_x, pixel_y
                 )
-            if decimal & 2:
+            if decimal & 2:  # ESTE (Se pinta empujado a la derecha)
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall_east, pixel_x, pixel_y
+                    mlx_ptr, window_ptr, img_wall_east,
+                    pixel_x + CELL_SIZE - 2, pixel_y
                 )
-            if decimal & 4:
+            if decimal & 4:  # SUR (Se pinta empujado hacia abajo)
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall_south, pixel_x, pixel_y
+                    mlx_ptr, window_ptr, img_wall_south,
+                    pixel_x, pixel_y + CELL_SIZE - 2
                 )
-            if decimal & 8:
+            if decimal & 8:  # OESTE (Se pinta a la izquierda del todo)
                 mlx_visual.mlx_put_image_to_window(  # type: ignore
                     mlx_ptr, window_ptr, img_wall_west, pixel_x, pixel_y
                 )
