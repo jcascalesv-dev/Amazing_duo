@@ -16,7 +16,9 @@ def render_maze(
             else:
                 top_line += "+   "
             # Muro Oeste (Bit 3)
-            if decimal & 8:
+            if decimal == 15:
+                mid_line += "| x "
+            elif decimal & 8:
                 mid_line += "|   "
             else:
                 mid_line += "    "
