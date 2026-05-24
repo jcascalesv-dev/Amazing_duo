@@ -3,7 +3,7 @@ from typing import Any
 
 def transform_directions(
     entrance: tuple[int, int], directions: str
-) -> list[tuple[int, int]]:
+) -> set[Any]:
     x: int
     y: int
     x, y = entrance
@@ -19,7 +19,7 @@ def transform_directions(
         elif direction == "W":
             x -= 1
         start.append((x, y))
-    return start
+    return set(start)
 
 
 def render_maze(
