@@ -1,14 +1,36 @@
 from typing import Any
 
 
+def transform_directions(
+    entrance: tuple[int, int], directions: str
+) -> list[tuple[int, int]]:
+    x: int
+    y: int
+    x, y = entrance
+    start: list[tuple[int, int]] = []
+    start.append(entrance)
+    for direction in directions:
+        if direction == "N":
+            y -= 1
+        elif direction == "E":
+            x += 1
+        elif direction == "S":
+            y += 1
+        elif direction == "W":
+            x -= 1
+        start.append((x, y))
+    return start
+
+
 def render_maze(
     dims: dict[str, int], maze_coords: list[str], way: dict[str, Any]
 ) -> None:
+    directions = transform_directions(way["entrance"], way["directions"])
     print("\n--- RENDERIZADO ASCII DEL LABERINTO ---")
-    for row in maze_coords:
+    for y, row in enumerate(maze_coords):
         top_line = ""
         mid_line = ""
-        for digit in row:
+        for x, digit in enumerate(row):
             decimal: int = int(digit, 16)
             # Muro Norte (Bit 0)
             if decimal & 1:
@@ -16,12 +38,28 @@ def render_maze(
             else:
                 top_line += "+   "
             # Muro Oeste (Bit 3)
-            if decimal == 15:
-                mid_line += "| x "
-            elif decimal & 8:
-                mid_line += "|   "
+            if decimal & 8:
+                if (x, y) == way["entrance"]:
+                    mid_line += "| S "
+                elif (x, y) == way["exit"]:
+                    mid_line += "| E "
+                elif (x, y) in directions:
+                    mid_line += "| . "
+                elif decimal == 15:
+                    mid_line += "| X "
+                else:
+                    mid_line += "|   "
             else:
-                mid_line += "    "
+                if (x, y) == way["entrance"]:
+                    mid_line += "  S "
+                elif (x, y) == way["exit"]:
+                    mid_line += "  E "
+                elif (x, y) in directions:
+                    mid_line += "  . "
+                elif decimal == 15:
+                    mid_line += "  X "
+                else:
+                    mid_line += "    "
         # Cerramos el borde derecho de cada fila (Muro Este de la última celda)
         last_decimal = int(row[-1], 16)
         top_line += "+"
