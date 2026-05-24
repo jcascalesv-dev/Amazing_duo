@@ -1,6 +1,7 @@
 import sys
 from typing import Any
 from mlx import Mlx
+import time
 
 CELL_SIZE = 32
 WALL_THICKNESS = 4  # El grosor en píxeles de nuestros nuevos archivos .xpm
@@ -56,6 +57,7 @@ def render_maze(
     img_wall_v, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
         mlx_ptr, "textures/wall_v.xpm"
     )
+    time.sleep(0.3)
     # 5. EL BUCLE DE RENDERIZADO DE MUROS
     for y, row in enumerate(maze_coords):
         for x, digit in enumerate(row):
