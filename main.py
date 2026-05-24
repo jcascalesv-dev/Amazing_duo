@@ -5,7 +5,7 @@ from get_maze_data import (
     get_dimensions,
     get_way
 )
-from render_ascii import render_maze
+from render import render_maze
 
 
 def main() -> None:
