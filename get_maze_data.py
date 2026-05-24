@@ -1,4 +1,5 @@
 from typing import Any
+import sys
 
 """
 Función para leer el fichero config y obtener el nombre del fichero
@@ -29,8 +30,10 @@ def get_maze_coords(maze_file: str) -> list[str]:
             while row and row != "\n":
                 maze_coords.append(row.strip())
                 row = file.readline()
-    except FileNotFoundError as e:
-        raise Exception(f"Error: file {maze_file} doesn't exist: {e}")
+    except FileNotFoundError:
+        print("Error crítico: "
+              f"No se encuentra el archivo {maze_file}.", file=sys.stderr)
+        sys.exit(1)
     except Exception as e:
         raise Exception(f"Unexpected error reading the file: {str(e)}")
     return maze_coords
