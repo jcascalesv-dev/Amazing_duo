@@ -40,24 +40,24 @@ def render_maze(
             # Muro Oeste (Bit 3)
             if decimal & 8:
                 if (x, y) == way["entrance"]:
-                    mid_line += "| S "
+                    mid_line += "| 🏁"
                 elif (x, y) == way["exit"]:
-                    mid_line += "| E "
+                    mid_line += "| ✅"
                 elif (x, y) in directions:
-                    mid_line += "| . "
+                    mid_line += "| ○ "
                 elif decimal == 15:
-                    mid_line += "| X "
+                    mid_line += "| ⦿ "
                 else:
                     mid_line += "|   "
             else:
                 if (x, y) == way["entrance"]:
-                    mid_line += "  S "
+                    mid_line += "  🏁"
                 elif (x, y) == way["exit"]:
-                    mid_line += "  E "
+                    mid_line += "  ✅"
                 elif (x, y) in directions:
-                    mid_line += "  . "
+                    mid_line += "  ○ "
                 elif decimal == 15:
-                    mid_line += "  X "
+                    mid_line += "  ⦿ "
                 else:
                     mid_line += "    "
         # Cerramos el borde derecho de cada fila (Muro Este de la última celda)
