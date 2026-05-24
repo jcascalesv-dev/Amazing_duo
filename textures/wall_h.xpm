@@ -1,5 +1,6 @@
 /* XPM */
 static char *wall_h[] = {
+/* ANCHO ALTO COLORES CHARS_POR_PIXEL */
 "32 4 1 1",
 "X c #A60000",
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
