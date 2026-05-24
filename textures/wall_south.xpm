@@ -1,9 +1,0 @@
-/* XPM */
-static char *wall_south_xpm[] = {
-"32 2 3 1",
-"  c #000000",
-". c #A60000",
-"X c #1A1A1A",
-"X..X  X..X  X..X  X..X  X..X  X.",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-};
