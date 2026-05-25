@@ -41,7 +41,8 @@ def transform_directions(
 
 
 def render_maze(
-    dims: dict[str, int], maze_coords: list[str], way: dict[str, Any]
+    dims: dict[str, int], maze_coords: list[str],
+    way: dict[str, Any], perfect: bool
 ) -> None:
     # 1. Pre-procesar el camino usando tu técnica optimizada
     directions_set = transform_directions(way["entrance"], way["directions"])
@@ -63,12 +64,22 @@ def render_maze(
         mlx_ptr, screen_width, screen_height, "A-maze-ing MLX!"
     )
     # 5. CARGAMOS TODAS LAS TEXTURAS (Muros + Interior)
-    img_wall_h, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-        mlx_ptr, "textures/wall_h.xpm"
-    )
-    img_wall_v, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-        mlx_ptr, "textures/wall_v.xpm"
-    )
+    walls_h = [
+        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+            mlx_ptr, "textures/wall_h.xpm")[0],
+        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+            mlx_ptr, "textures/wall_h_green.xpm")[0],
+        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+            mlx_ptr, "textures/wall_h_blue.xpm")[0]
+    ]
+    walls_v = [
+        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+            mlx_ptr, "textures/wall_v.xpm"),
+        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+            mlx_ptr, "textures/wall_v_green.xpm"),
+        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+            mlx_ptr, "textures/wall_v_blue.xpm")
+    ]
     img_logo_42, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
         mlx_ptr, "textures/logo_42.xpm"
     )
@@ -85,13 +96,14 @@ def render_maze(
     # y evitar el corte superior
     time.sleep(0.3)
     show_path = True
+    color_index = 0  # (0=Rojo, 1=Verde, 2=Azul)
 
     # 6. EL BUCLE MAESTRO DE RENDERIZADO
     def draw_frame() -> None:
         # Limpiamos la pantalla antes de repintar
         mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)  # type: ignore
         # Para que de tiempo al S.O. a limpiar la pantalla antes del render
-        time.sleep(0.05)
+        time.sleep(0.1)
         for y, row in enumerate(maze_coords):
             for x, digit in enumerate(row):
                 decimal: int = int(digit, 16)
@@ -128,21 +140,23 @@ def render_maze(
                 # --- B. LÓGICA DE MUROS INTERNOS (Norte y Oeste) ---
                 if decimal & 1:
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
-                        mlx_ptr, window_ptr, img_wall_h, pixel_x, pixel_y
+                        mlx_ptr, window_ptr, walls_h[color_index],
+                        pixel_x, pixel_y
                     )
                 if decimal & 8:
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
-                        mlx_ptr, window_ptr, img_wall_v, pixel_x, pixel_y
+                        mlx_ptr, window_ptr, walls_v[color_index],
+                        pixel_x, pixel_y
                     )
                 # --- C. CIERRE PERIMETRAL EXTERIOR ---
                 if x == len(row) - 1 and (decimal & 2):
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
-                        mlx_ptr, window_ptr, img_wall_v,
+                        mlx_ptr, window_ptr, walls_v[color_index],
                         pixel_x + CELL_SIZE - WALL_THICKNESS, pixel_y
                     )
                 if y == len(maze_coords) - 1 and (decimal & 4):
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
-                        mlx_ptr, window_ptr, img_wall_h,
+                        mlx_ptr, window_ptr, walls_h[color_index],
                         pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
                     )
         # 7. PINTAR EL TEXTO DEL MENÚ EN LA FRANJA NEGRA
@@ -156,7 +170,7 @@ def render_maze(
     #  8. LOS HOOKS (El Cerebro)
     def key_hook(keycode: int, param: Any) -> int:
         """Captura las pulsaciones del teclado."""
-        nonlocal show_path
+        nonlocal show_path, color_index
         if keycode == KEY_ESC or keycode == KEY_4:
             print("Cerrando la interfaz gráfica de forma limpia...")
             mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
@@ -167,27 +181,36 @@ def render_maze(
             height = dims["HEIGHT"]
             entry_pos = way["entrance"]
             exit_pos = way["exit"]
-            is_perfect = False
-            nueva_semilla = random.randint(1, 999999)
-            generator = MazeGenerator(width=width, height=height,
-                                      perfect=is_perfect, seed=nueva_semilla)
-            generator.generate(start_x=entry_pos[0], start_y=entry_pos[1],
-                               end_x=exit_pos[0], end_y=exit_pos[1])
-            generator.save_to_file(filename="maze.txt", start=entry_pos,
-                                   end=exit_pos)
-            time.sleep(0.05)
-            maze_coords = get_maze_coords("maze.txt")
-            dims = get_dimensions()
-            way = get_way("maze.txt")
-            directions_set = transform_directions(
-                way["entrance"], way["directions"]
-            )
-            draw_frame()
+            try:
+                new_seed = random.randint(1, 999999)
+                generator = MazeGenerator(width=width, height=height,
+                                          perfect=perfect, seed=new_seed)
+                generator.generate(start_x=entry_pos[0], start_y=entry_pos[1],
+                                   end_x=exit_pos[0], end_y=exit_pos[1])
+                generator.save_to_file(filename="maze.txt", start=entry_pos,
+                                       end=exit_pos)
+                time.sleep(0.05)
+                maze_coords = get_maze_coords("maze.txt")
+                dims = get_dimensions()
+                way = get_way("maze.txt")
+                directions_set = transform_directions(
+                    way["entrance"], way["directions"]
+                )
+                draw_frame()
+            except InvalidMazeConfig as e:
+                print("[ERROR GENERACIÓN] Configuración inválida:"
+                      f"{e}", file=sys.stderr)
+            except Exception as e:
+                print("[ERROR SISTEMA] Fallo inesperado al regenerar:"
+                      f"{e}", file=sys.stderr)
         elif keycode == KEY_2:
             show_path = not show_path
             draw_frame()
         elif keycode == KEY_3:
-            print("[HOOK] Has pulsado 3: Cambiar Color (Lógica pendiente)")
+            # Sumamos 1 al índice. Si llegamos a 3 (fuera de la lista),
+            # el % lo devuelve a 0.
+            color_index = (color_index + 1) % len(walls_h)
+            draw_frame()
         return 0
 
     def close_hook(param: Any) -> int:

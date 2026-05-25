@@ -108,7 +108,7 @@ def main() -> None:
         maze_coords: list[str] = get_maze_coords(maze_file)
         dims: dict[str, int] = get_dimensions()
         way: dict[str, Any] = get_way(maze_file)
-        render_maze(dims, maze_coords, way)
+        render_maze(dims, maze_coords, way, perfect)
     except Exception as e:
         print(e)
 
