@@ -97,13 +97,14 @@ def render_maze(
     time.sleep(0.3)
     show_path = True
     color_index = 0  # (0=Rojo, 1=Verde, 2=Azul)
+    needs_redraw = False
 
     # 6. EL BUCLE MAESTRO DE RENDERIZADO
     def draw_frame() -> None:
         # Limpiamos la pantalla antes de repintar
         mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)  # type: ignore
         # Para que de tiempo al S.O. a limpiar la pantalla antes del render
-        time.sleep(0.25)
+        # time.sleep(0.25)
         for y, row in enumerate(maze_coords):
             for x, digit in enumerate(row):
                 decimal: int = int(digit, 16)
@@ -170,9 +171,9 @@ def render_maze(
     #  8. LOS HOOKS (El Cerebro)
     def key_hook(keycode: int, param: Any) -> int:
         """Captura las pulsaciones del teclado."""
-        nonlocal show_path, color_index
+        nonlocal show_path, color_index, needs_redraw
         if keycode == KEY_ESC or keycode == KEY_4:
-            print("Cerrando la interfaz gráfica de forma limpia...")
+            print("Closing maze window...")
             mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
             os._exit(0)
         elif keycode == KEY_1:
@@ -196,7 +197,7 @@ def render_maze(
                 directions_set = transform_directions(
                     way["entrance"], way["directions"]
                 )
-                draw_frame()
+                needs_redraw = True
             except InvalidMazeConfig as e:
                 print("[ERROR GENERACIÓN] Configuración inválida:"
                       f"{e}", file=sys.stderr)
@@ -205,23 +206,32 @@ def render_maze(
                       f"{e}", file=sys.stderr)
         elif keycode == KEY_2:
             show_path = not show_path
-            draw_frame()
+            needs_redraw = True
         elif keycode == KEY_3:
             # Sumamos 1 al índice. Si llegamos a 3 (fuera de la lista),
             # el % lo devuelve a 0.
             color_index = (color_index + 1) % len(walls_h)
-            draw_frame()
+            needs_redraw = True
         return 0
 
     def close_hook(param: Any) -> int:
         """Captura el clic en la 'X' de la ventana del sistema operativo."""
         print("Cierre forzado desde la X de la ventana.")
         mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
-        sys.exit(0)
+        os._exit(0)
+
+    def background_loop(param: Any) -> int:
+        """Se ejecuta miles de veces por segundo en segundo plano."""
+        nonlocal needs_redraw
+        if needs_redraw:
+            draw_frame()
+            needs_redraw = False  # Bajamos la bandera tras pintar
+        return 0
     # Conectamos las funciones a la ventana
     mlx_visual.mlx_key_hook(window_ptr, key_hook, None)  # type: ignore
     # El evento 17 en X11 es 'DestroyNotify' (Clic en la X)
     mlx_visual.mlx_hook(window_ptr, 17, 0, close_hook, None)  # type: ignore
+    mlx_visual.mlx_loop_hook(mlx_ptr, background_loop, None)  # type: ignore
     # 9. Primer renderizado inical
     draw_frame()
     # 10. Mantener la ventana abierta
