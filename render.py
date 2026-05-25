@@ -85,6 +85,8 @@ def render_maze(
 
     # 6. EL BUCLE MAESTRO DE RENDERIZADO
     def draw_frame() -> None:
+        # Limpiamos la pantalla antes de repintar
+        mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)  # type: ignore
         for y, row in enumerate(maze_coords):
             for x, digit in enumerate(row):
                 decimal: int = int(digit, 16)
