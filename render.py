@@ -7,7 +7,7 @@ CELL_SIZE = 32
 WALL_THICKNESS = 4
 MAX_SCREEN_WIDTH = 1920
 MAX_SCREEN_HEIGHT = 1080
-MENU_HEIGHT = 50
+MENU_HEIGHT = 40
 # Códigos de teclado para Linux (X11)
 KEY_1 = 49
 KEY_2 = 50
@@ -136,7 +136,7 @@ def render_maze(
     # y le damos un margen izquierdo
     menu_text = "1: regen | 2: path | 3: color | 4: quit"
     mlx_visual.mlx_string_put(  # type: ignore
-        mlx_ptr, window_ptr, 20, screen_height - 15, 0xFFFFFF, menu_text
+        mlx_ptr, window_ptr, 15, screen_height - 15, 0xFFFFFF, menu_text
     )
 
     #  8. LOS HOOKS (El Cerebro)
