@@ -87,6 +87,8 @@ def render_maze(
     def draw_frame() -> None:
         # Limpiamos la pantalla antes de repintar
         mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)  # type: ignore
+        # Para que de tiempo al S.O. a limpiar la pantalla antes del render
+        time.sleep(0.05)
         for y, row in enumerate(maze_coords):
             for x, digit in enumerate(row):
                 decimal: int = int(digit, 16)
