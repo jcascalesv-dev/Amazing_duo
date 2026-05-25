@@ -175,6 +175,7 @@ def render_maze(
                                end_x=exit_pos[0], end_y=exit_pos[1])
             generator.save_to_file(filename="maze.txt", start=entry_pos,
                                    end=exit_pos)
+            time.sleep(0.05)
             maze_coords = get_maze_coords("maze.txt")
             dims = get_dimensions()
             way = get_way("maze.txt")
