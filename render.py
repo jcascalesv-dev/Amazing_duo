@@ -5,8 +5,6 @@ from mlx import Mlx
 
 CELL_SIZE = 32
 WALL_THICKNESS = 4
-
-# Límite seguro conservador (1080p) para no reventar la resolución
 MAX_SCREEN_WIDTH = 1920
 MAX_SCREEN_HEIGHT = 1080
 
@@ -54,14 +52,26 @@ def render_maze(
         mlx_ptr, screen_width, screen_height, "A-maze-ing MLX!"
     )
     # 5. CARGAMOS TODAS LAS TEXTURAS (Muros + Interior)
-    img_wall_h, _, _ = mlx_visual.mlx_xpm_file_to_image(mlx_ptr, "textures/wall_h.xpm")  # type: ignore
-    img_wall_v, _, _ = mlx_visual.mlx_xpm_file_to_image(mlx_ptr, "textures/wall_v.xpm")  # type: ignore
-    img_logo_42, _, _ = mlx_visual.mlx_xpm_file_to_image(mlx_ptr, "textures/logo_42.xpm")  # type: ignore
-    img_start, _, _ = mlx_visual.mlx_xpm_file_to_image(mlx_ptr, "textures/start.xpm")  # type: ignore
-    img_exit, _, _ = mlx_visual.mlx_xpm_file_to_image(mlx_ptr, "textures/exit.xpm")  # type: ignore
-    img_path, _, _ = mlx_visual.mlx_xpm_file_to_image(mlx_ptr, "textures/path.xpm")  # type: ignore
-    # --- EL PARACAÍDAS DE LINUX ---
-    # Le damos a la ventana un instante para mapearse y evitar el corte superior
+    img_wall_h, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_h.xpm"
+    )
+    img_wall_v, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/wall_v.xpm"
+    )
+    img_logo_42, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/logo_42.xpm"
+    )
+    img_start, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/start.xpm"
+    )
+    img_exit, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/exit.xpm"
+    )
+    img_path, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_ptr, "textures/path.xpm"
+    )
+    # Le damos a la ventana un instante para mapearse
+    # y evitar el corte superior
     time.sleep(0.3) 
     # 6. EL BUCLE MAESTRO DE RENDERIZADO
     for y, row in enumerate(maze_coords):
@@ -71,27 +81,48 @@ def render_maze(
             pixel_y = y * CELL_SIZE
             coord = (x, y)
             # --- A. EL INTERIOR DE LA CELDA (Z-Index) ---
-            # Dibujamos esto PRIMERO para que los muros siempre queden por encima si hay roce
+            # Dibujamos esto PRIMERO para que los muros
+            # siempre queden por encima si hay roce
             if coord == way["entrance"]:
-                # Centramos la imagen de 24x24 en la celda de 32x32 (+4 píxeles)
-                mlx_visual.mlx_put_image_to_window(mlx_ptr, window_ptr, img_start, pixel_x + 4, pixel_y + 4)  # type: ignore
+                # Centramos la imagen de 24x24 en
+                # la celda de 32x32 (+4 píxeles)
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_start, pixel_x + 4, pixel_y + 4
+                )
             elif coord == way["exit"]:
-                mlx_visual.mlx_put_image_to_window(mlx_ptr, window_ptr, img_exit, pixel_x + 4, pixel_y + 4)  # type: ignore
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_exit, pixel_x + 4, pixel_y + 4
+                )
             elif decimal == 15:
                 # El bloque masivo del 42 rellena todo el hueco exacto de 32x32
-                mlx_visual.mlx_put_image_to_window(mlx_ptr, window_ptr, img_logo_42, pixel_x, pixel_y)  # type: ignore
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_logo_42, pixel_x, pixel_y
+                )
             elif coord in directions_set:
-                # Centramos el rastro del camino de 8x8 en la celda de 32x32 (+12 píxeles)
-                mlx_visual.mlx_put_image_to_window(mlx_ptr, window_ptr, img_path, pixel_x + 12, pixel_y + 12)  # type: ignore
+                # Centramos el rastro del camino de 8x8
+                # en la celda de 32x32 (+12 píxeles)
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_path, pixel_x + 12, pixel_y + 12
+                )
             # --- B. LÓGICA DE MUROS INTERNOS (Norte y Oeste) ---
-            if decimal & 1:  
-                mlx_visual.mlx_put_image_to_window(mlx_ptr, window_ptr, img_wall_h, pixel_x, pixel_y)  # type: ignore
-            if decimal & 8:  
-                mlx_visual.mlx_put_image_to_window(mlx_ptr, window_ptr, img_wall_v, pixel_x, pixel_y)  # type: ignore
+            if decimal & 1:
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_wall_h, pixel_x, pixel_y
+                )
+            if decimal & 8:
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_wall_v, pixel_x, pixel_y
+                )
             # --- C. CIERRE PERIMETRAL EXTERIOR ---
             if x == len(row) - 1 and (decimal & 2):
-                mlx_visual.mlx_put_image_to_window(mlx_ptr, window_ptr, img_wall_v, pixel_x + CELL_SIZE - WALL_THICKNESS, pixel_y)  # type: ignore
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_wall_v,
+                    pixel_x + CELL_SIZE - WALL_THICKNESS, pixel_y
+                )
             if y == len(maze_coords) - 1 and (decimal & 4):
-                mlx_visual.mlx_put_image_to_window(mlx_ptr, window_ptr, img_wall_h, pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS)  # type: ignore
+                mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_ptr, window_ptr, img_wall_h,
+                    pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
+                )
     # 7. Mantener la ventana abierta
     mlx_visual.mlx_loop(mlx_ptr)  # type: ignore
