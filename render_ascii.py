@@ -75,4 +75,3 @@ def render_maze(
             bottom_line += "+   "
     bottom_line += "+"
     print(bottom_line)
-

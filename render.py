@@ -72,7 +72,7 @@ def render_maze(
     )
     # Le damos a la ventana un instante para mapearse
     # y evitar el corte superior
-    time.sleep(0.3) 
+    time.sleep(0.3)
     # 6. EL BUCLE MAESTRO DE RENDERIZADO
     for y, row in enumerate(maze_coords):
         for x, digit in enumerate(row):
