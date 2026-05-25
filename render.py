@@ -74,11 +74,11 @@ def render_maze(
     ]
     walls_v = [
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/wall_v.xpm"),
+            mlx_ptr, "textures/wall_v.xpm")[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/wall_v_green.xpm"),
+            mlx_ptr, "textures/wall_v_green.xpm")[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/wall_v_blue.xpm")
+            mlx_ptr, "textures/wall_v_blue.xpm")[0]
     ]
     img_logo_42, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
         mlx_ptr, "textures/logo_42.xpm"
