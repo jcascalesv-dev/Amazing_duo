@@ -1,8 +1,11 @@
 import sys
 import time
 import os
+import random
 from typing import Any
 from mlx import Mlx
+from mazegen.generator import MazeGenerator, InvalidMazeConfig
+from get_maze_data import get_dimensions, get_maze_coords, get_way
 
 CELL_SIZE = 32
 WALL_THICKNESS = 4
@@ -159,7 +162,26 @@ def render_maze(
             mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
             os._exit(0)
         elif keycode == KEY_1:
-            print("[HOOK] Has pulsado 1: Regenerar mapa (Lógica pendiente)")
+            nonlocal maze_coords, way, directions_set, dims
+            width = dims["WIDTH"]
+            height = dims["HEIGHT"]
+            entry_pos = way["entrance"]
+            exit_pos = way["exit"]
+            is_perfect = False
+            nueva_semilla = random.randint(1, 999999)
+            generator = MazeGenerator(width=width, height=height,
+                                      perfect=is_perfect, seed=nueva_semilla)
+            generator.generate(start_x=entry_pos[0], start_y=entry_pos[1],
+                               end_x=exit_pos[0], end_y=exit_pos[1])
+            generator.save_to_file(filename="maze.txt", start=entry_pos,
+                                   end=exit_pos)
+            maze_coords = get_maze_coords("maze.txt")
+            dims = get_dimensions()
+            way = get_way("maze.txt")
+            directions_set = transform_directions(
+                way["entrance"], way["directions"]
+            )
+            draw_frame()
         elif keycode == KEY_2:
             show_path = not show_path
             draw_frame()
