@@ -7,6 +7,13 @@ CELL_SIZE = 32
 WALL_THICKNESS = 4
 MAX_SCREEN_WIDTH = 1920
 MAX_SCREEN_HEIGHT = 1080
+MENU_HEIGHT = 40
+# Códigos de teclado para Linux (X11)
+KEY_1 = 49
+KEY_2 = 50
+KEY_3 = 51
+KEY_4 = 52
+KEY_ESC = 65307
 
 
 def transform_directions(
@@ -36,7 +43,7 @@ def render_maze(
     directions_set = transform_directions(way["entrance"], way["directions"])
     # 2. Calculamos el tamaño final de la ventana
     screen_width: int = dims["WIDTH"] * CELL_SIZE
-    screen_height: int = dims["HEIGHT"] * CELL_SIZE
+    screen_height: int = (dims["HEIGHT"] * CELL_SIZE) + MENU_HEIGHT
     # 3. EL ESCUDO ANTI-CRASHES
     if screen_width > MAX_SCREEN_WIDTH or screen_height > MAX_SCREEN_HEIGHT:
         print("Error Crítico: El laberinto es "
@@ -124,5 +131,39 @@ def render_maze(
                     mlx_ptr, window_ptr, img_wall_h,
                     pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
                 )
+    # 7. PINTAR EL TEXTO DEL MENÚ EN LA FRANJA NEGRA
+    # Lo centramos verticalmente en los 40px extra,
+    # y le damos un margen izquierdo
+    menu_text = "1: regen | 2: path | 3: color | 4: quit"
+    mlx_visual.mlx_string_put(  # type: ignore
+        mlx_ptr, window_ptr, 20, screen_height - 15, 0xFFFFFF, menu_text
+    )
+
+    #  8. LOS HOOKS (El Cerebro)
+    def key_hook(keycode: int, param: Any) -> int:
+        """Captura las pulsaciones del teclado."""
+        if keycode == KEY_ESC or keycode == KEY_4:
+            print("Cerrando la interfaz gráfica de forma limpia...")
+            mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
+            sys.exit(0)
+        elif keycode == KEY_1:
+            print("[HOOK] Has pulsado 1: Regenerar mapa (Lógica pendiente)")
+        elif keycode == KEY_2:
+            print("[HOOK] Has pulsado 2: "
+                  "Mostrar/OcultarPath (Lógica pendiente)")
+        elif keycode == KEY_3:
+            print("[HOOK] Has pulsado 3: Cambiar Color (Lógica pendiente)")
+        return 0
+
+    def close_hook(param: Any) -> int:
+        """Captura el clic en la 'X' de la ventana del sistema operativo."""
+        print("Cierre forzado desde la X de la ventana.")
+        mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
+        sys.exit(0)
+
+    # Conectamos las funciones a la ventana
+    mlx_visual.mlx_key_hook(window_ptr, key_hook, None)  # type: ignore
+    # El evento 17 en X11 es 'DestroyNotify' (Clic en la X)
+    mlx_visual.mlx_hook(window_ptr, 17, 0, close_hook, None)  # type: ignore
     # 7. Mantener la ventana abierta
     mlx_visual.mlx_loop(mlx_ptr)  # type: ignore
