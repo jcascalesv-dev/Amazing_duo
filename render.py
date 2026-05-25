@@ -81,6 +81,7 @@ def render_maze(
     # Le damos a la ventana un instante para mapearse
     # y evitar el corte superior
     time.sleep(0.3)
+    show_path = True
 
     # 6. EL BUCLE MAESTRO DE RENDERIZADO
     def draw_frame() -> None:
@@ -110,13 +111,13 @@ def render_maze(
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
                         mlx_ptr, window_ptr, img_logo_42, pixel_x, pixel_y
                     )
-                elif coord in directions_set:
-                    # Centramos el rastro del camino de 8x8
-                    # en la celda de 32x32 (+12 píxeles)
-                    mlx_visual.mlx_put_image_to_window(  # type: ignore
-                        mlx_ptr, window_ptr, img_path,
-                        pixel_x + 12, pixel_y + 12
-                    )
+                #elif coord in directions_set:
+                #    # Centramos el rastro del camino de 8x8
+                #    # en la celda de 32x32 (+12 píxeles)
+                #    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                #        mlx_ptr, window_ptr, img_path,
+                #        pixel_x + 12, pixel_y + 12
+                #    )
                 # --- B. LÓGICA DE MUROS INTERNOS (Norte y Oeste) ---
                 if decimal & 1:
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
@@ -155,8 +156,9 @@ def render_maze(
         elif keycode == KEY_1:
             print("[HOOK] Has pulsado 1: Regenerar mapa (Lógica pendiente)")
         elif keycode == KEY_2:
-            print("[HOOK] Has pulsado 2: "
-                  "Mostrar/OcultarPath (Lógica pendiente)")
+            nonlocal show_path
+            show_path = False
+            draw_frame()
         elif keycode == KEY_3:
             print("[HOOK] Has pulsado 3: Cambiar Color (Lógica pendiente)")
         return 0
