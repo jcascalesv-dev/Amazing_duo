@@ -1,5 +1,6 @@
 import sys
 import time
+import os
 from typing import Any
 from mlx import Mlx
 
@@ -136,7 +137,7 @@ def render_maze(
     # y le damos un margen izquierdo
     menu_text = "1: regen | 2: path | 3: color | 4: quit"
     mlx_visual.mlx_string_put(  # type: ignore
-        mlx_ptr, window_ptr, 15, screen_height - 15, 0xFFFFFF, menu_text
+        mlx_ptr, window_ptr, 20, screen_height - 25, 0xFFFFFF, menu_text
     )
 
     #  8. LOS HOOKS (El Cerebro)
@@ -145,7 +146,7 @@ def render_maze(
         if keycode == KEY_ESC or keycode == KEY_4:
             print("Cerrando la interfaz gráfica de forma limpia...")
             mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
-            sys.exit(0)
+            os._exit(0)
         elif keycode == KEY_1:
             print("[HOOK] Has pulsado 1: Regenerar mapa (Lógica pendiente)")
         elif keycode == KEY_2:
