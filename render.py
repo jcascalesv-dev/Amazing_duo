@@ -81,64 +81,69 @@ def render_maze(
     # Le damos a la ventana un instante para mapearse
     # y evitar el corte superior
     time.sleep(0.3)
+
     # 6. EL BUCLE MAESTRO DE RENDERIZADO
-    for y, row in enumerate(maze_coords):
-        for x, digit in enumerate(row):
-            decimal: int = int(digit, 16)
-            pixel_x = x * CELL_SIZE
-            pixel_y = y * CELL_SIZE
-            coord = (x, y)
-            # --- A. EL INTERIOR DE LA CELDA (Z-Index) ---
-            # Dibujamos esto PRIMERO para que los muros
-            # siempre queden por encima si hay roce
-            if coord == way["entrance"]:
-                # Centramos la imagen de 24x24 en
-                # la celda de 32x32 (+4 píxeles)
-                mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_start, pixel_x + 4, pixel_y + 4
-                )
-            elif coord == way["exit"]:
-                mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_exit, pixel_x + 4, pixel_y + 4
-                )
-            elif decimal == 15:
-                # El bloque masivo del 42 rellena todo el hueco exacto de 32x32
-                mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_logo_42, pixel_x, pixel_y
-                )
-            elif coord in directions_set:
-                # Centramos el rastro del camino de 8x8
-                # en la celda de 32x32 (+12 píxeles)
-                mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_path, pixel_x + 12, pixel_y + 12
-                )
-            # --- B. LÓGICA DE MUROS INTERNOS (Norte y Oeste) ---
-            if decimal & 1:
-                mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall_h, pixel_x, pixel_y
-                )
-            if decimal & 8:
-                mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall_v, pixel_x, pixel_y
-                )
-            # --- C. CIERRE PERIMETRAL EXTERIOR ---
-            if x == len(row) - 1 and (decimal & 2):
-                mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall_v,
-                    pixel_x + CELL_SIZE - WALL_THICKNESS, pixel_y
-                )
-            if y == len(maze_coords) - 1 and (decimal & 4):
-                mlx_visual.mlx_put_image_to_window(  # type: ignore
-                    mlx_ptr, window_ptr, img_wall_h,
-                    pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
-                )
-    # 7. PINTAR EL TEXTO DEL MENÚ EN LA FRANJA NEGRA
-    # Lo centramos verticalmente en los 40px extra,
-    # y le damos un margen izquierdo
-    menu_text = "1: regen | 2: path | 3: color | 4: quit"
-    mlx_visual.mlx_string_put(  # type: ignore
-        mlx_ptr, window_ptr, 20, screen_height - 25, 0xFFFFFF, menu_text
-    )
+    def draw_frame() -> None:
+        for y, row in enumerate(maze_coords):
+            for x, digit in enumerate(row):
+                decimal: int = int(digit, 16)
+                pixel_x = x * CELL_SIZE
+                pixel_y = y * CELL_SIZE
+                coord = (x, y)
+                # --- A. EL INTERIOR DE LA CELDA (Z-Index) ---
+                # Dibujamos esto PRIMERO para que los muros
+                # siempre queden por encima si hay roce
+                if coord == way["entrance"]:
+                    # Centramos la imagen de 24x24 en
+                    # la celda de 32x32 (+4 píxeles)
+                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                        mlx_ptr, window_ptr, img_start,
+                        pixel_x + 4, pixel_y + 4
+                    )
+                elif coord == way["exit"]:
+                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                        mlx_ptr, window_ptr, img_exit, pixel_x + 4, pixel_y + 4
+                    )
+                elif decimal == 15:
+                    # El bloque masivo del 42 rellena
+                    # todo el hueco exacto de 32x32
+                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                        mlx_ptr, window_ptr, img_logo_42, pixel_x, pixel_y
+                    )
+                elif coord in directions_set:
+                    # Centramos el rastro del camino de 8x8
+                    # en la celda de 32x32 (+12 píxeles)
+                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                        mlx_ptr, window_ptr, img_path,
+                        pixel_x + 12, pixel_y + 12
+                    )
+                # --- B. LÓGICA DE MUROS INTERNOS (Norte y Oeste) ---
+                if decimal & 1:
+                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                        mlx_ptr, window_ptr, img_wall_h, pixel_x, pixel_y
+                    )
+                if decimal & 8:
+                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                        mlx_ptr, window_ptr, img_wall_v, pixel_x, pixel_y
+                    )
+                # --- C. CIERRE PERIMETRAL EXTERIOR ---
+                if x == len(row) - 1 and (decimal & 2):
+                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                        mlx_ptr, window_ptr, img_wall_v,
+                        pixel_x + CELL_SIZE - WALL_THICKNESS, pixel_y
+                    )
+                if y == len(maze_coords) - 1 and (decimal & 4):
+                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                        mlx_ptr, window_ptr, img_wall_h,
+                        pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
+                    )
+        # 7. PINTAR EL TEXTO DEL MENÚ EN LA FRANJA NEGRA
+        # Lo centramos verticalmente en los 40px extra,
+        # y le damos un margen izquierdo
+        menu_text = "1: regen | 2: path | 3: color | 4: quit"
+        mlx_visual.mlx_string_put(  # type: ignore
+            mlx_ptr, window_ptr, 20, screen_height - 25, 0xFFFFFF, menu_text
+        )
 
     #  8. LOS HOOKS (El Cerebro)
     def key_hook(keycode: int, param: Any) -> int:
@@ -161,10 +166,11 @@ def render_maze(
         print("Cierre forzado desde la X de la ventana.")
         mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
         sys.exit(0)
-
     # Conectamos las funciones a la ventana
     mlx_visual.mlx_key_hook(window_ptr, key_hook, None)  # type: ignore
     # El evento 17 en X11 es 'DestroyNotify' (Clic en la X)
     mlx_visual.mlx_hook(window_ptr, 17, 0, close_hook, None)  # type: ignore
-    # 7. Mantener la ventana abierta
+    # 9. Primer renderizado inical
+    draw_frame()
+    # 10. Mantener la ventana abierta
     mlx_visual.mlx_loop(mlx_ptr)  # type: ignore
