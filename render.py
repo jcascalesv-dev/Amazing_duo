@@ -149,6 +149,7 @@ def render_maze(
     #  8. LOS HOOKS (El Cerebro)
     def key_hook(keycode: int, param: Any) -> int:
         """Captura las pulsaciones del teclado."""
+        nonlocal show_path
         if keycode == KEY_ESC or keycode == KEY_4:
             print("Cerrando la interfaz gráfica de forma limpia...")
             mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
@@ -156,8 +157,7 @@ def render_maze(
         elif keycode == KEY_1:
             print("[HOOK] Has pulsado 1: Regenerar mapa (Lógica pendiente)")
         elif keycode == KEY_2:
-            nonlocal show_path
-            show_path = False
+            show_path = not show_path
             draw_frame()
         elif keycode == KEY_3:
             print("[HOOK] Has pulsado 3: Cambiar Color (Lógica pendiente)")
