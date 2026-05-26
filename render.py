@@ -5,7 +5,7 @@ import random
 from typing import Any
 from mlx import Mlx
 from mazegen.generator import MazeGenerator, InvalidMazeConfig
-from get_maze_data import get_dimensions, get_maze_coords, get_way
+from get_maze_data import get_maze_coords, get_way
 
 CELL_SIZE = 32
 WALL_THICKNESS = 4
@@ -185,7 +185,7 @@ def render_maze(
             mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
             os._exit(0)
         elif keycode == KEY_1:
-            nonlocal maze_coords, way, directions_set, dims
+            nonlocal maze_coords, way, directions_set
             width = dims["WIDTH"]
             height = dims["HEIGHT"]
             entry_pos = way["entrance"]
@@ -200,7 +200,7 @@ def render_maze(
                                        end=exit_pos)
                 time.sleep(0.15)
                 maze_coords = get_maze_coords("maze.txt")
-                dims = get_dimensions()
+                # dims = get_dimensions()
                 way = get_way("maze.txt")
                 directions_set = transform_directions(
                     way["entrance"], way["directions"]
