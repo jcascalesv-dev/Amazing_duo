@@ -110,8 +110,6 @@ def render_maze(
     def draw_frame() -> None:
         # Limpiamos la pantalla antes de repintar
         mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)  # type: ignore
-        # Para que de tiempo al S.O. a limpiar la pantalla antes del render
-        # time.sleep(0.25)
         for y, row in enumerate(maze_coords):
             for x, digit in enumerate(row):
                 decimal: int = int(digit, 16)
@@ -196,7 +194,7 @@ def render_maze(
                                           perfect=perfect, seed=new_seed)
                 generator.generate(start_x=entry_pos[0], start_y=entry_pos[1],
                                    end_x=exit_pos[0], end_y=exit_pos[1])
-                generator.save_to_file(filename="maze.txt", start=entry_pos,
+                generator.save_to_file(filename=output_file, start=entry_pos,
                                        end=exit_pos)
                 time.sleep(0.15)
                 maze_coords = get_maze_coords(output_file)
