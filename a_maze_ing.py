@@ -99,11 +99,10 @@ def main() -> None:
         sys.exit(1)
     # 5. Arrancamos la maquinaria del renderizado.
     try:
-        maze_coords: list[str] = get_maze_coords(config["output_file"])
-        dims: dict[str, int] = {"width": int(config["width"]),
-                                "height": int(config["height"])}
-        way: dict[str, Any] = get_way(config["output_file"])
-        render_maze(dims, maze_coords, way, perfect)
+        maze_coords: list[str] = get_maze_coords(output_file)
+        dims: dict[str, int] = {"WIDTH": width, "HEIGHT": height}
+        way: dict[str, Any] = get_way(output_file)
+        render_maze(dims, maze_coords, way, perfect, output_file)
     except Exception as e:
         print(e)
 

@@ -43,7 +43,7 @@ def transform_directions(
 
 def render_maze(
     dims: dict[str, int], maze_coords: list[str],
-    way: dict[str, Any], perfect: bool
+    way: dict[str, Any], perfect: bool, output_file: str
 ) -> None:
     # 1. Pre-procesar el camino usando tu técnica optimizada
     directions_set = transform_directions(way["entrance"], way["directions"])
@@ -199,9 +199,8 @@ def render_maze(
                 generator.save_to_file(filename="maze.txt", start=entry_pos,
                                        end=exit_pos)
                 time.sleep(0.15)
-                maze_coords = get_maze_coords("maze.txt")
-                # dims = get_dimensions()
-                way = get_way("maze.txt")
+                maze_coords = get_maze_coords(output_file)
+                way = get_way(output_file)
                 directions_set = transform_directions(
                     way["entrance"], way["directions"]
                 )
