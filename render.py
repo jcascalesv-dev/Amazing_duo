@@ -101,7 +101,7 @@ def render_maze(
     # Le damos a la ventana un instante para mapearse
     # y evitar el corte superior
     time.sleep(0.3)
-    show_path = True
+    show_path = False
     color_index = 0  # (0=Rojo, 1=Verde, 2=Azul)
     logo_color_in = 0
     needs_redraw = False
