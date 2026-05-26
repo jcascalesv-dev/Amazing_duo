@@ -3,12 +3,19 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mazegen"
+name = "a_maze_ing"
 version = "1.0.0"
 authors = [{name="jcascale y mjabalqu"}]
-description = "A-Maze-ing maze generator"
+description = "A-Maze-ing maze generator and renderer"
 readme = "README.md"
 requires-python = ">=3.10"
+
+[project.scripts]
+play_maze = "a_maze_ing:main" 
+
+[tool.setuptools]
+py-modules = ["a_maze_ing", "render", "get_maze_data", "mlx"]
+include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["mazegen*"]

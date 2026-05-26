@@ -7,6 +7,7 @@ from mlx import Mlx
 from mazegen.generator import MazeGenerator, InvalidMazeConfig
 from get_maze_data import get_maze_coords, get_way
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CELL_SIZE = 32
 WALL_THICKNESS = 4
 MAX_SCREEN_WIDTH = 1920
@@ -67,27 +68,30 @@ def render_maze(
     # 5. CARGAMOS TODAS LAS TEXTURAS (Muros + Interior)
     walls_h = [
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/wall_h.xpm")[0],
+            mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_h.xpm"))[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/wall_h_green.xpm")[0],
+            mlx_ptr,
+            os.path.join(BASE_DIR, "textures", "wall_h_green.xpm"))[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/wall_h_blue.xpm")[0]
+            mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_h_blue.xpm"))[0]
     ]
     walls_v = [
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/wall_v.xpm")[0],
+            mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_v.xpm"))[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/wall_v_green.xpm")[0],
+            mlx_ptr,
+            os.path.join(BASE_DIR, "textures", "wall_h_green.xpm"))[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/wall_v_blue.xpm")[0]
+            mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_h_blue.xpm"))[0]
     ]
     logos = [
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/logo_42.xpm")[0],
+            mlx_ptr, os.path.join(BASE_DIR, "textures", "logo_42.xpm"))[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/logo_42_red.xpm")[0],
+            mlx_ptr, os.path.join(BASE_DIR, "textures", "logo_42_red.xpm"))[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, "textures/logo_42_yellow.xpm")[0]
+            mlx_ptr,
+            os.path.join(BASE_DIR, "textures", "logo_42_yellow.xpm"))[0]
     ]
     img_start, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
         mlx_ptr, "textures/start.xpm"
