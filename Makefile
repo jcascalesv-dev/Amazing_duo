@@ -21,9 +21,9 @@ run:
 # Pasa la lupa estricta de 42 (Mypy y Flake8)
 lint:
 	@echo "--- Running Flake8 ---"
-	flake8 mazegen a_maze_ing.py render.py get_maze_data.py mlx.py
+	flake8 mazegen a_maze_ing.py render.py get_maze_data.py
 	@echo "--- Running Mypy ---"
-	mypy --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs mazegen a_maze_ing.py render.py get_maze_data.py mlx.py
+	mypy --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs mazegen a_maze_ing.py render.py get_maze_data.py
 # Limpia basura generada por Python y compilaciones
 clean:
 	rm -rf build dist *.egg-info .mypy_cache .pytest_cache

@@ -94,13 +94,13 @@ def render_maze(
             os.path.join(BASE_DIR, "textures", "logo_42_yellow.xpm"))[0]
     ]
     img_start, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-        mlx_ptr, "textures/start.xpm"
+        mlx_ptr, os.path.join(BASE_DIR, "textures", "start.xpm")
     )
     img_exit, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-        mlx_ptr, "textures/exit.xpm"
+        mlx_ptr, os.path.join(BASE_DIR, "textures", "exit.xpm")
     )
     img_path, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-        mlx_ptr, "textures/path.xpm"
+        mlx_ptr, os.path.join(BASE_DIR, "textures", "path.xpm")
     )
     # Le damos a la ventana un instante para mapearse
     # y evitar el corte superior

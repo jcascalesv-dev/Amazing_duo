@@ -1,3 +1,2 @@
 include config.txt
-include libmlx.so
 recursive-include textures *.xpm
