@@ -17,6 +17,7 @@ KEY_1 = 49
 KEY_2 = 50
 KEY_3 = 51
 KEY_4 = 52
+KEY_5 = 53
 KEY_ESC = 65307
 
 
@@ -80,9 +81,14 @@ def render_maze(
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
             mlx_ptr, "textures/wall_v_blue.xpm")[0]
     ]
-    img_logo_42, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-        mlx_ptr, "textures/logo_42.xpm"
-    )
+    logos = [
+        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+            mlx_ptr, "textures/logo_42.xpm")[0],
+        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+            mlx_ptr, "textures/logo_42_red.xpm")[0],
+        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+            mlx_ptr, "textures/logo_42_yellow.xpm")[0]
+    ]
     img_start, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
         mlx_ptr, "textures/start.xpm"
     )
@@ -97,6 +103,7 @@ def render_maze(
     time.sleep(0.3)
     show_path = True
     color_index = 0  # (0=Rojo, 1=Verde, 2=Azul)
+    logo_color_in = 0
     needs_redraw = False
 
     # 6. EL BUCLE MAESTRO DE RENDERIZADO
@@ -129,7 +136,8 @@ def render_maze(
                     # El bloque masivo del 42 rellena
                     # todo el hueco exacto de 32x32
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
-                        mlx_ptr, window_ptr, img_logo_42, pixel_x, pixel_y
+                        mlx_ptr, window_ptr, logos[logo_color_in],
+                        pixel_x, pixel_y
                     )
                 elif coord in directions_set and show_path:
                     # Centramos el rastro del camino de 8x8
@@ -163,7 +171,7 @@ def render_maze(
         # 7. PINTAR EL TEXTO DEL MENÚ EN LA FRANJA NEGRA
         # Lo centramos verticalmente en los 40px extra,
         # y le damos un margen izquierdo
-        menu_text = "1: regen | 2: path | 3: color | 4: quit"
+        menu_text = "1: regen | 2: path | 3: color | 4: logo | 5: quit"
         mlx_visual.mlx_string_put(  # type: ignore
             mlx_ptr, window_ptr, 20, screen_height - 25, 0xFFFFFF, menu_text
         )
@@ -171,8 +179,8 @@ def render_maze(
     #  8. LOS HOOKS (El Cerebro)
     def key_hook(keycode: int, param: Any) -> int:
         """Captura las pulsaciones del teclado."""
-        nonlocal show_path, color_index, needs_redraw
-        if keycode == KEY_ESC or keycode == KEY_4:
+        nonlocal show_path, color_index, needs_redraw, logo_color_in
+        if keycode == KEY_ESC or keycode == KEY_5:
             print("Closing maze window...")
             mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
             os._exit(0)
@@ -211,6 +219,9 @@ def render_maze(
             # Sumamos 1 al índice. Si llegamos a 3 (fuera de la lista),
             # el % lo devuelve a 0.
             color_index = (color_index + 1) % len(walls_h)
+            needs_redraw = True
+        elif keycode == KEY_4:
+            logo_color_in = logo_color_in + 1 if logo_color_in < 2 else 0
             needs_redraw = True
         return 0
 
