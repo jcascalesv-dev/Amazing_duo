@@ -80,9 +80,9 @@ def render_maze(
             mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_v.xpm"))[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
             mlx_ptr,
-            os.path.join(BASE_DIR, "textures", "wall_h_green.xpm"))[0],
+            os.path.join(BASE_DIR, "textures", "wall_v_green.xpm"))[0],
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
-            mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_h_blue.xpm"))[0]
+            mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_v_blue.xpm"))[0]
     ]
     logos = [
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
