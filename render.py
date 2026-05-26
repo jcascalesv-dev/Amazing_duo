@@ -46,12 +46,12 @@ def render_maze(
     dims: dict[str, int], maze_coords: list[str],
     way: dict[str, Any], perfect: bool, output_file: str
 ) -> None:
-    # 1. Pre-procesar el camino usando tu técnica optimizada
+    # 1. Pre-procesar el camino
     directions_set = transform_directions(way["entrance"], way["directions"])
     # 2. Calculamos el tamaño final de la ventana
     screen_width: int = dims["WIDTH"] * CELL_SIZE
     screen_height: int = (dims["HEIGHT"] * CELL_SIZE) + MENU_HEIGHT
-    # 3. EL ESCUDO ANTI-CRASHES
+    # 3. Comprobamos que no excedemos los límites de resolución de pantalla
     if screen_width > MAX_SCREEN_WIDTH or screen_height > MAX_SCREEN_HEIGHT:
         print("Error Crítico: El laberinto es "
               "demasiado grande para la interfaz gráfica "
@@ -61,11 +61,13 @@ def render_maze(
         sys.exit(1)
     # 4. Inicializamos la librería gráfica
     mlx_visual = Mlx()
+    # mlx_ptr nos da acceso para poder interacturar con la pantalla
     mlx_ptr = mlx_visual.mlx_init()
+    # creamos la ventana
     window_ptr: int = mlx_visual.mlx_new_window(  # type: ignore
         mlx_ptr, screen_width, screen_height, "A-maze-ing MLX!"
     )
-    # 5. CARGAMOS TODAS LAS TEXTURAS (Muros + Interior)
+    # 5. CARGAMOS TODAS LAS TEXTURAS en memoria (Muros + Interior)
     walls_h = [
         mlx_visual.mlx_xpm_file_to_image(  # type: ignore
             mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_h.xpm"))[0],
@@ -93,6 +95,8 @@ def render_maze(
             mlx_ptr,
             os.path.join(BASE_DIR, "textures", "logo_42_yellow.xpm"))[0]
     ]
+    # Descartamos los args 2 y 3 del retorno de la funcion
+    # porque son las dimensiones de la img y no nos hacen falta
     img_start, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
         mlx_ptr, os.path.join(BASE_DIR, "textures", "start.xpm")
     )
@@ -110,7 +114,7 @@ def render_maze(
     logo_color_in = 0
     needs_redraw = False
 
-    # 6. EL BUCLE MAESTRO DE RENDERIZADO
+    # 6. BUCLE DE RENDERIZADO
     def draw_frame() -> None:
         # Limpiamos la pantalla antes de repintar
         mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)  # type: ignore
@@ -170,7 +174,7 @@ def render_maze(
                         mlx_ptr, window_ptr, walls_h[color_index],
                         pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
                     )
-        # 7. PINTAR EL TEXTO DEL MENÚ EN LA FRANJA NEGRA
+        # 7. PINTAR EL TEXTO DEL MENÚ
         # Lo centramos verticalmente en los 40px extra,
         # y le damos un margen izquierdo
         menu_text = "1: regen | 2: path | 3: color | 4: logo | 5: quit"
@@ -178,7 +182,7 @@ def render_maze(
             mlx_ptr, window_ptr, 20, screen_height - 25, 0xFFFFFF, menu_text
         )
 
-    #  8. LOS HOOKS (El Cerebro)
+    #  8. HOOKS. Funciones de callback
     def key_hook(keycode: int, param: Any) -> int:
         """Captura las pulsaciones del teclado."""
         nonlocal show_path, color_index, needs_redraw, logo_color_in
@@ -222,6 +226,7 @@ def render_maze(
         elif keycode == KEY_4:
             logo_color_in = logo_color_in + 1 if logo_color_in < 2 else 0
             needs_redraw = True
+        # La función de la librería espera que devolvamos un int
         return 0
 
     def close_hook(param: Any) -> int:
@@ -237,12 +242,13 @@ def render_maze(
             draw_frame()
             needs_redraw = False  # Bajamos la bandera tras pintar
         return 0
-    # Conectamos las funciones a la ventana
+    # Conectamos las funciones a la ventana. Pasamos las funciones
+    # de callback para que las ejecute cuando el usuario pulse una tecla
     mlx_visual.mlx_key_hook(window_ptr, key_hook, None)  # type: ignore
     # El evento 17 en X11 es 'DestroyNotify' (Clic en la X)
     mlx_visual.mlx_hook(window_ptr, 17, 0, close_hook, None)  # type: ignore
     mlx_visual.mlx_loop_hook(mlx_ptr, background_loop, None)  # type: ignore
     # 9. Primer renderizado inical
     draw_frame()
-    # 10. Mantener la ventana abierta
+    # 10. Mantener la ventana abierta (bucle infinito)
     mlx_visual.mlx_loop(mlx_ptr)  # type: ignore
