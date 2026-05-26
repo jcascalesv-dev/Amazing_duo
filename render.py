@@ -216,9 +216,7 @@ def render_maze(
             show_path = not show_path
             needs_redraw = True
         elif keycode == KEY_3:
-            # Sumamos 1 al índice. Si llegamos a 3 (fuera de la lista),
-            # el % lo devuelve a 0.
-            color_index = (color_index + 1) % len(walls_h)
+            color_index = color_index + 1 if color_index < 2 else 0
             needs_redraw = True
         elif keycode == KEY_4:
             logo_color_in = logo_color_in + 1 if logo_color_in < 2 else 0
