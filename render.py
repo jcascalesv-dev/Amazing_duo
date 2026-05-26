@@ -128,7 +128,7 @@ def render_maze(
                     )
                 elif coord == way["exit"]:
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
-                        mlx_ptr, window_ptr, img_exit, pixel_x, pixel_y + 1
+                        mlx_ptr, window_ptr, img_exit, pixel_x + 2, pixel_y + 2
                     )
                 elif decimal == 15:
                     # El bloque masivo del 42 rellena
