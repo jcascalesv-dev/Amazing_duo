@@ -124,11 +124,11 @@ def render_maze(
                     # la celda de 32x32 (+4 píxeles)
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
                         mlx_ptr, window_ptr, img_start,
-                        pixel_x + 4, pixel_y + 4
+                        pixel_x + 1, pixel_y + 1
                     )
                 elif coord == way["exit"]:
                     mlx_visual.mlx_put_image_to_window(  # type: ignore
-                        mlx_ptr, window_ptr, img_exit, pixel_x + 4, pixel_y + 4
+                        mlx_ptr, window_ptr, img_exit, pixel_x + 1, pixel_y + 1
                     )
                 elif decimal == 15:
                     # El bloque masivo del 42 rellena
