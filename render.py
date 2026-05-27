@@ -115,11 +115,11 @@ def render_maze(
     )
     # Le damos a la ventana un instante para mapearse
     # y evitar el corte superior
-    time.sleep(0.1)
+    # time.sleep(0.1)
     show_path = False
     color_index = 0  # (0=Rojo, 1=Verde, 2=Azul)
     logo_color_in = 0
-    needs_redraw = False
+    needs_redraw = True
 
     # 6. BUCLE DE RENDERIZADO
     def draw_frame() -> None:
@@ -255,6 +255,6 @@ def render_maze(
     mlx_visual.mlx_hook(window_ptr, 17, 0, close_hook, None)
     mlx_visual.mlx_loop_hook(mlx_ptr, background_loop, None)
     # 9. Primer renderizado inical
-    draw_frame()
+    # draw_frame()
     # 10. Mantener la ventana abierta (bucle infinito)
     mlx_visual.mlx_loop(mlx_ptr)
