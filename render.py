@@ -8,7 +8,7 @@ from mazegen.generator import MazeGenerator, InvalidMazeConfig
 from get_maze_data import get_maze_coords, get_way
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CELL_SIZE = 32
+CELL_SIZE = 40
 WALL_THICKNESS = 4
 MAX_SCREEN_WIDTH = 1920
 MAX_SCREEN_HEIGHT = 1080
