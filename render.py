@@ -10,8 +10,8 @@ from get_maze_data import get_maze_coords, get_way
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CELL_SIZE = 48
 WALL_THICKNESS = 4
-MAX_SCREEN_WIDTH = 1920
-MAX_SCREEN_HEIGHT = 1080
+MAX_SCREEN_WIDTH = 2560
+MAX_SCREEN_HEIGHT = 1440
 MIN_SCREEN_WIDTH = 640
 MIN_SCREEN_HEIGHT = 480
 MENU_HEIGHT = 60
