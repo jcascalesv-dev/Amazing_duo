@@ -185,7 +185,7 @@ def render_maze(
         # Lo centramos verticalmente en los 60px extra,
         # y le damos un margen izquierdo
         mlx_visual.mlx_put_image_to_window(
-            mlx_ptr, window_ptr, menu_text, 0, 0
+            mlx_ptr, window_ptr, menu_text, 20, screen_height - 60
         )
 
     #  8. HOOKS. Funciones de callback
