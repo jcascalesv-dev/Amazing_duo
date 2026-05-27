@@ -1,21 +1,24 @@
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "a_maze_ing"
+[tool.poetry]
+name = "a-maze-ing"
 version = "1.0.0"
-authors = [{name="jcascale y mjabalqu"}]
 description = "A-Maze-ing maze generator and renderer"
-readme = "README.md"
-requires-python = ">=3.10"
+authors = ["jcascale y mjabalqu <estudiantes@42malaga.com>"]
+# Le indicamos a Poetry dónde está tu código
+packages = [
+    { include = "mazegen*" },
+    { include = "a_maze_ing.py" },
+    { include = "render.py" },
+    { include = "get_maze_data.py" }
+]
 
-[project.scripts]
-play_maze = "a_maze_ing:main" 
+[tool.poetry.dependencies]
+python = ">=3.10"
+# Aquí es donde le decimos que lea el wheel local
+mlx = {path = "mlx-2.2-py3-none-any.whl"}
 
-[tool.setuptools]
-py-modules = ["a_maze_ing", "render", "get_maze_data"]
-include-package-data = true
+[tool.poetry.scripts]
+play_maze = "a_maze_ing:main"
 
-[tool.setuptools.packages.find]
-include = ["mazegen*"]
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,4 +1,5 @@
 import sys
+import time
 from mazegen.generator import MazeGenerator, InvalidMazeConfig
 from typing import Any
 from get_maze_data import get_maze_coords, get_way
@@ -100,8 +101,11 @@ def main() -> None:
     # 5. Arrancamos la maquinaria del renderizado.
     try:
         maze_coords: list[str] = get_maze_coords(output_file)
+        time.sleep(0.5)
         dims: dict[str, int] = {"WIDTH": width, "HEIGHT": height}
+        time.sleep(0.5)
         way: dict[str, Any] = get_way(output_file)
+        time.sleep(0.5)
         render_maze(dims, maze_coords, way, perfect, output_file)
     except Exception as e:
         print(e)

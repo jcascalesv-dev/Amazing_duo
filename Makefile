@@ -7,6 +7,7 @@ all: run
 
 # Instala el paquete localmente en tu entorno virtual
 install:
+	$(PYTHON) -m venv env
 	$(PIP) install .
 
 # Construye los archivos .tar.gz y .whl (el subject suele pedir esto)
@@ -24,6 +25,13 @@ lint:
 	flake8 mazegen a_maze_ing.py render.py get_maze_data.py
 	@echo "--- Running Mypy ---"
 	mypy --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs mazegen a_maze_ing.py render.py get_maze_data.py
+
+lint-strict:
+	@echo "--- Running Flake8 ---"
+	flake8 mazegen a_maze_ing.py render.py get_maze_data.py
+	@echo "--- Running Mypy ---"
+	mypy --strict --ignore-missing-imports mazegen a_maze_ing.py render.py get_maze_data.py
+
 # Limpia basura generada por Python y compilaciones
 clean:
 	rm -rf build dist *.egg-info .mypy_cache .pytest_cache

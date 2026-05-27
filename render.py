@@ -64,51 +64,51 @@ def render_maze(
     # mlx_ptr nos da acceso para poder interacturar con la pantalla
     mlx_ptr = mlx_visual.mlx_init()
     # creamos la ventana
-    window_ptr: int = mlx_visual.mlx_new_window(  # type: ignore
+    window_ptr: int = mlx_visual.mlx_new_window(
         mlx_ptr, screen_width, screen_height, "A-maze-ing MLX!"
     )
     # 5. CARGAMOS TODAS LAS TEXTURAS en memoria (Muros + Interior)
     walls_h = [
-        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_h.xpm"))[0],
-        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr,
             os.path.join(BASE_DIR, "textures", "wall_h_green.xpm"))[0],
-        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_h_blue.xpm"))[0]
     ]
     walls_v = [
-        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_v.xpm"))[0],
-        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr,
             os.path.join(BASE_DIR, "textures", "wall_v_green.xpm"))[0],
-        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_v_blue.xpm"))[0]
     ]
     logos = [
-        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr, os.path.join(BASE_DIR, "textures", "logo_42.xpm"))[0],
-        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr, os.path.join(BASE_DIR, "textures", "logo_42_red.xpm"))[0],
-        mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+        mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr,
             os.path.join(BASE_DIR, "textures", "logo_42_yellow.xpm"))[0]
     ]
     # Descartamos los args 2 y 3 del retorno de la funcion
     # porque son las dimensiones de la img y no nos hacen falta
-    img_start, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+    img_start, _, _ = mlx_visual.mlx_xpm_file_to_image(
         mlx_ptr, os.path.join(BASE_DIR, "textures", "start.xpm")
     )
-    img_exit, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+    img_exit, _, _ = mlx_visual.mlx_xpm_file_to_image(
         mlx_ptr, os.path.join(BASE_DIR, "textures", "exit.xpm")
     )
-    img_path, _, _ = mlx_visual.mlx_xpm_file_to_image(  # type: ignore
+    img_path, _, _ = mlx_visual.mlx_xpm_file_to_image(
         mlx_ptr, os.path.join(BASE_DIR, "textures", "path.xpm")
     )
     # Le damos a la ventana un instante para mapearse
     # y evitar el corte superior
-    time.sleep(0.3)
+    time.sleep(0.1)
     show_path = False
     color_index = 0  # (0=Rojo, 1=Verde, 2=Azul)
     logo_color_in = 0
@@ -117,7 +117,7 @@ def render_maze(
     # 6. BUCLE DE RENDERIZADO
     def draw_frame() -> None:
         # Limpiamos la pantalla antes de repintar
-        mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)  # type: ignore
+        mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)
         for y, row in enumerate(maze_coords):
             for x, digit in enumerate(row):
                 decimal: int = int(digit, 16)
@@ -130,47 +130,47 @@ def render_maze(
                 if coord == way["entrance"]:
                     # Centramos la imagen de 24x24 en
                     # la celda de 32x32 (+4 píxeles)
-                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, img_start,
                         pixel_x + 1, pixel_y + 1
                     )
                 elif coord == way["exit"]:
-                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, img_exit, pixel_x + 2, pixel_y + 2
                     )
                 elif decimal == 15:
                     # El bloque masivo del 42 rellena
                     # todo el hueco exacto de 32x32
-                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, logos[logo_color_in],
                         pixel_x, pixel_y
                     )
                 elif coord in directions_set and show_path:
                     # Centramos el rastro del camino de 8x8
                     # en la celda de 32x32 (+12 píxeles)
-                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, img_path,
                         pixel_x + 12, pixel_y + 12
                     )
                 # --- B. LÓGICA DE MUROS INTERNOS (Norte y Oeste) ---
                 if decimal & 1:
-                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, walls_h[color_index],
                         pixel_x, pixel_y
                     )
                 if decimal & 8:
-                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, walls_v[color_index],
                         pixel_x, pixel_y
                     )
                 # --- C. CIERRE PERIMETRAL EXTERIOR ---
                 if x == len(row) - 1 and (decimal & 2):
-                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, walls_v[color_index],
                         pixel_x + CELL_SIZE - WALL_THICKNESS, pixel_y
                     )
                 if y == len(maze_coords) - 1 and (decimal & 4):
-                    mlx_visual.mlx_put_image_to_window(  # type: ignore
+                    mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, walls_h[color_index],
                         pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
                     )
@@ -178,7 +178,7 @@ def render_maze(
         # Lo centramos verticalmente en los 40px extra,
         # y le damos un margen izquierdo
         menu_text = "1: regen | 2: path | 3: color | 4: logo | 5: quit"
-        mlx_visual.mlx_string_put(  # type: ignore
+        mlx_visual.mlx_string_put(
             mlx_ptr, window_ptr, 20, screen_height - 25, 0xFFFFFF, menu_text
         )
 
@@ -188,7 +188,7 @@ def render_maze(
         nonlocal show_path, color_index, needs_redraw, logo_color_in
         if keycode == KEY_ESC or keycode == KEY_5:
             print("Closing maze window...")
-            mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
+            mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)
             os._exit(0)
         elif keycode == KEY_1:
             nonlocal maze_coords, way, directions_set
@@ -204,7 +204,6 @@ def render_maze(
                                    end_x=exit_pos[0], end_y=exit_pos[1])
                 generator.save_to_file(filename=output_file, start=entry_pos,
                                        end=exit_pos)
-                time.sleep(0.15)
                 maze_coords = get_maze_coords(output_file)
                 way = get_way(output_file)
                 directions_set = transform_directions(
@@ -232,23 +231,24 @@ def render_maze(
     def close_hook(param: Any) -> int:
         """Captura el clic en la 'X' de la ventana del sistema operativo."""
         print("Cierre forzado desde la X de la ventana.")
-        mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)  # type: ignore
+        mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)
         os._exit(0)
 
     def background_loop(param: Any) -> int:
         """Se ejecuta miles de veces por segundo en segundo plano."""
         nonlocal needs_redraw
         if needs_redraw:
+            mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)
             draw_frame()
             needs_redraw = False  # Bajamos la bandera tras pintar
         return 0
     # Conectamos las funciones a la ventana. Pasamos las funciones
     # de callback para que las ejecute cuando el usuario pulse una tecla
-    mlx_visual.mlx_key_hook(window_ptr, key_hook, None)  # type: ignore
+    mlx_visual.mlx_key_hook(window_ptr, key_hook, None)
     # El evento 17 en X11 es 'DestroyNotify' (Clic en la X)
-    mlx_visual.mlx_hook(window_ptr, 17, 0, close_hook, None)  # type: ignore
-    mlx_visual.mlx_loop_hook(mlx_ptr, background_loop, None)  # type: ignore
+    mlx_visual.mlx_hook(window_ptr, 17, 0, close_hook, None)
+    mlx_visual.mlx_loop_hook(mlx_ptr, background_loop, None)
     # 9. Primer renderizado inical
     draw_frame()
     # 10. Mantener la ventana abierta (bucle infinito)
-    mlx_visual.mlx_loop(mlx_ptr)  # type: ignore
+    mlx_visual.mlx_loop(mlx_ptr)

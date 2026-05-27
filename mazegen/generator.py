@@ -128,7 +128,7 @@ class MazeGenerator:
 
     def _make_imperfect(self) -> None:
         """Rompe muros aleatoriamente para crear bucles y atajos."""
-        # Calculamos cuántos muros romper (ej. 5% del tamaño total)
+        # Calculamos cuántos muros romper (ej. 2 del tamaño total)
         num_walls: int = (self.width * self.height) // 20
         if num_walls == 0:
             num_walls = 1

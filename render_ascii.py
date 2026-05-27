@@ -22,7 +22,7 @@ def transform_directions(
     return set(start)
 
 
-def render_maze(
+def render_maze_ascii(
     dims: dict[str, int], maze_coords: list[str], way: dict[str, Any]
 ) -> None:
     directions = transform_directions(way["entrance"], way["directions"])
