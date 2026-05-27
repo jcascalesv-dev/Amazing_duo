@@ -12,6 +12,8 @@ CELL_SIZE = 48
 WALL_THICKNESS = 4
 MAX_SCREEN_WIDTH = 1920
 MAX_SCREEN_HEIGHT = 1080
+MIN_SCREEN_WIDTH = 640
+MIN_SCREEN_HEIGHT = 480
 MENU_HEIGHT = 60
 # Códigos de teclado para Linux (X11)
 KEY_1 = 49
@@ -59,6 +61,8 @@ def render_maze(
               f"{MAX_SCREEN_WIDTH}x{MAX_SCREEN_HEIGHT} px. "
               "Por favor, use el modo de renderizado ASCII.", file=sys.stderr)
         sys.exit(1)
+    screen_width = max(screen_width, MIN_SCREEN_WIDTH)
+    screen_height = max(screen_height, MIN_SCREEN_HEIGHT)
     # 4. Inicializamos la librería gráfica
     mlx_visual = Mlx()
     # mlx_ptr nos da acceso para poder interacturar con la pantalla
@@ -147,10 +151,10 @@ def render_maze(
                     )
                 elif coord in directions_set and show_path:
                     # Centramos el rastro del camino de 8x8
-                    # en la celda de 32x32 (+12 píxeles)
+                    # en la celda de 48x48 (+20 píxeles)
                     mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, img_path,
-                        pixel_x + 16, pixel_y + 16
+                        pixel_x + 20, pixel_y + 20
                     )
                 # --- B. LÓGICA DE MUROS INTERNOS (Norte y Oeste) ---
                 if decimal & 1:
