@@ -1,5 +1,5 @@
 import sys
-import time
+# import time
 from mazegen.generator import MazeGenerator, InvalidMazeConfig
 from typing import Any
 from get_maze_data import get_maze_coords, get_way
