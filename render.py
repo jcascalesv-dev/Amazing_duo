@@ -184,8 +184,8 @@ def render_maze(
         # 7. PINTAR EL TEXTO DEL MENÚ
         # Lo centramos verticalmente en los 60px extra,
         # y le damos un margen izquierdo
-        mlx_visual.mlx_string_put(
-            mlx_ptr, window_ptr, 20, screen_height - 60, 0xFFFFFF, menu_text
+        mlx_visual.mlx_put_image_to_window(
+            mlx_ptr, window_ptr, menu_text, 20, screen_height - 60
         )
 
     #  8. HOOKS. Funciones de callback
