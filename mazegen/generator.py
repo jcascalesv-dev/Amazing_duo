@@ -189,7 +189,7 @@ class MazeGenerator:
                 self.solution_coords = path[::-1]
                 return
 
-            for dx, dy, wall, opp_wall in DIRECTIONS:
+            for dx, dy, wall, _ in DIRECTIONS:
                 if not (self.grid[cy][cx] & wall):
                     nx, ny = cx + dx, cy + dy
                     if (nx, ny) not in visited_bfs:
@@ -304,4 +304,4 @@ class MazeGenerator:
             f.write(f"{path_str}\n")                 # Solución N,E,S,W
             # --- PARCHE DE SINCRONIZACIÓN DE DISCO ---
             f.flush()            # Vacía el buffer interno de Python
-            os.fsync(f.fileno())  # Obliga al SO a escribir físicamente en el disco
+            os.fsync(f.fileno())  # Obliga al SO a escribir en el disco
