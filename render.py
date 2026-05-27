@@ -110,6 +110,9 @@ def render_maze(
     img_path, _, _ = mlx_visual.mlx_xpm_file_to_image(
         mlx_ptr, os.path.join(BASE_DIR, "textures", "path.xpm")
     )
+    menu_text, _, _ = mlx_visual.mlx_xpm_file_to_image(
+        mlx_ptr, os.path.join(BASE_DIR, "textures", "menu_text.xpm")
+    )
     # Le damos a la ventana un instante para mapearse
     # y evitar el corte superior
     time.sleep(0.1)
@@ -179,11 +182,10 @@ def render_maze(
                         pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
                     )
         # 7. PINTAR EL TEXTO DEL MENÚ
-        # Lo centramos verticalmente en los 40px extra,
+        # Lo centramos verticalmente en los 60px extra,
         # y le damos un margen izquierdo
-        menu_text = "1: regen | 2: path | 3: color | 4: logo | 5: quit"
         mlx_visual.mlx_string_put(
-            mlx_ptr, window_ptr, 20, screen_height - 25, 0xFFFFFF, menu_text
+            mlx_ptr, window_ptr, 20, screen_height - 60, 0xFFFFFF, menu_text
         )
 
     #  8. HOOKS. Funciones de callback
