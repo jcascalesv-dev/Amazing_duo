@@ -12,7 +12,7 @@ CELL_SIZE = 48
 WALL_THICKNESS = 4
 MAX_SCREEN_WIDTH = 1920
 MAX_SCREEN_HEIGHT = 1080
-MENU_HEIGHT = 40
+MENU_HEIGHT = 60
 # Códigos de teclado para Linux (X11)
 KEY_1 = 49
 KEY_2 = 50
@@ -150,7 +150,7 @@ def render_maze(
                     # en la celda de 32x32 (+12 píxeles)
                     mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, img_path,
-                        pixel_x + 12, pixel_y + 12
+                        pixel_x + 16, pixel_y + 16
                     )
                 # --- B. LÓGICA DE MUROS INTERNOS (Norte y Oeste) ---
                 if decimal & 1:
