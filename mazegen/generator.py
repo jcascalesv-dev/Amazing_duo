@@ -1,5 +1,6 @@
 import random
 import sys
+import os
 from collections import deque
 
 # Constantes para los bits de las paredes (N, E, S, W)
@@ -301,3 +302,6 @@ class MazeGenerator:
                 raise InvalidMazeConfig(
                     "Error: No valid path found from ENTRY to EXIT.")
             f.write(f"{path_str}\n")                 # Solución N,E,S,W
+            # --- PARCHE DE SINCRONIZACIÓN DE DISCO ---
+            f.flush()            # Vacía el buffer interno de Python
+            os.fsync(f.fileno())  # Obliga al SO a escribir físicamente en el disco
