@@ -1,5 +1,5 @@
 import sys
-# import time
+import time
 from mazegen.generator import MazeGenerator, InvalidMazeConfig
 from typing import Any
 from get_maze_data import get_maze_coords, get_way
@@ -27,7 +27,7 @@ def parse_config(filepath: str) -> dict[str, str]:
 
     except FileNotFoundError:
         print(f"Error: Config file '{filepath}' not found.", file=sys.stderr)
-        sys.exit(1)
+        sys.exit()
 
     return config
 
@@ -40,7 +40,7 @@ def parse_coords(coord_str: str) -> tuple[int, int]:
     except ValueError:
         print(f"Error: Invalid coordinate format '{coord_str}'."
               " Expected: 'x,y'.", file=sys.stderr)
-        sys.exit(1)
+        sys.exit()
 
 
 def parse_bool(bool_str: str) -> bool:
@@ -52,12 +52,13 @@ def main() -> None:
     # 1. Validamos que se pase el archivo por argumento
     if len(sys.argv) != 2:
         print("Usage: python3 main.py <config.txt>", file=sys.stderr)
-        sys.exit(1)
+        sys.exit()
 
     config_file = sys.argv[1]
 
     # 2. Parseamos la configuración
     config = parse_config(config_file)
+    time.sleep(1.5)
 
     # 3. Extraemos las variables (con validación básica)
     try:
@@ -75,11 +76,11 @@ def main() -> None:
     except KeyError as e:
         print(f"Error: Missing required configuration key: {e}",
               file=sys.stderr)
-        sys.exit(1)
+        sys.exit()
     except ValueError as e:
         print(f"Error: Invalid number format in configuration. {e}",
               file=sys.stderr)
-        sys.exit(1)
+        sys.exit()
 
     # 4. Instanciamos y ejecutamos el generador
     try:
@@ -93,18 +94,18 @@ def main() -> None:
 
     except InvalidMazeConfig as e:  # Aquí capturamos tu InvalidMazeConfig
         print(e, file=sys.stderr)
-        sys.exit(1)
+        sys.exit()
     except Exception as e:
         # Captura de emergencia por si algo explota
         print(f"An unexpected error occurred: {e}", file=sys.stderr)
-        sys.exit(1)
+        sys.exit()
     # 5. Arrancamos la maquinaria del renderizado.
     try:
         maze_coords: list[str] = get_maze_coords(output_file)
-        # time.sleep(2)
+        time.sleep(0.2)
         dims: dict[str, int] = {"WIDTH": width, "HEIGHT": height}
         way: dict[str, Any] = get_way(output_file)
-        # time.sleep(2)
+        time.sleep(0.2)
         render_maze(dims, maze_coords, way, perfect, output_file)
     except Exception as e:
         print(e)

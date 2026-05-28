@@ -1,5 +1,4 @@
 import sys
-# import time
 import os
 import random
 from typing import Any
@@ -115,7 +114,6 @@ def render_maze(
     )
     # Le damos a la ventana un instante para mapearse
     # y evitar el corte superior
-    # time.sleep(0.1)
     show_path = False
     color_index = 0  # (0=Rojo, 1=Verde, 2=Azul)
     logo_color_in = 0
@@ -244,7 +242,7 @@ def render_maze(
         """Se ejecuta miles de veces por segundo en segundo plano."""
         nonlocal needs_redraw
         if needs_redraw:
-            mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)
+            #  mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)
             draw_frame()
             needs_redraw = False  # Bajamos la bandera tras pintar
         return 0
@@ -252,7 +250,7 @@ def render_maze(
     # de callback para que las ejecute cuando el usuario pulse una tecla
     mlx_visual.mlx_key_hook(window_ptr, key_hook, None)
     # El evento 17 en X11 es 'DestroyNotify' (Clic en la X)
-    mlx_visual.mlx_hook(window_ptr, 17, 0, close_hook, None)
+    mlx_visual.mlx_hook(window_ptr, 33, 0, close_hook, None)
     mlx_visual.mlx_loop_hook(mlx_ptr, background_loop, None)
     # 9. Primer renderizado inical
     # draw_frame()

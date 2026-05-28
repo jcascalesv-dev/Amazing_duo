@@ -207,6 +207,19 @@ class MazeGenerator:
         Usamos iterativo en lugar de recursivo para evitar el límite
         de recursividad de Python en laberintos grandes.
         """
+        if not (0 <= start_x < self.width and 0 <= start_y < self.height):
+            print(
+                f"Error: ENTRY ({start_x},{start_y}) out of range.",
+                file=sys.stderr
+            )
+            sys.exit()
+        if not (0 <= end_x < self.width and 0 <= end_y < self.height):
+            print(
+                f"Error: EXIT ({end_x},{end_y}) out of range.",
+                file=sys.stderr
+            )
+            sys.exit()
+
         # 1. Intentar estampar el patrón 42
         self._stamp_42()
 

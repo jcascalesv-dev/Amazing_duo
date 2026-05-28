@@ -1,13 +1,12 @@
 NAME = a_maze_ing
 PYTHON = python3
-PIP = pip3
+PIP = pip
 
 # Regla por defecto
 all: run
 
 # Instala el paquete localmente en tu entorno virtual
 install:
-	$(PYTHON) -m venv env
 	$(PIP) install .
 
 # Construye los archivos .tar.gz y .whl (el subject suele pedir esto)

@@ -1,5 +1,2 @@
 __pycache__/
 .mypy_cache/
-*.egg-info/
-mlx.py
-libmlx.so
