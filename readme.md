@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by jcascale y mjabalqu.*
+*This project has been created as part of the 42 curriculum by jcascale, mjabalqu.*
 
 # A-Maze-Ing 
 
