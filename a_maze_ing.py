@@ -63,7 +63,15 @@ def main() -> None:
     # 3. Extraemos las variables (con validación básica)
     try:
         width = int(config['WIDTH'])
+        if width < 3:
+            print(f"Error: {width} must be greater than two.",
+                  file=sys.stderr)
+            sys.exit()
         height = int(config['HEIGHT'])
+        if height < 3:
+            print(f"Error: {height} must be greater than two.",
+                  file=sys.stderr)
+            sys.exit()
         entry_pos = parse_coords(config['ENTRY'])
         exit_pos = parse_coords(config['EXIT'])
         output_file = config['OUTPUT_FILE']

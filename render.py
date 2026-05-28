@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 import random
 from typing import Any
 from mlx import Mlx
@@ -179,6 +180,7 @@ def render_maze(
                         mlx_ptr, window_ptr, walls_h[color_index],
                         pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
                     )
+                time.sleep(0.0015)
         # 7. PINTAR EL TEXTO DEL MENÚ
         # Lo centramos verticalmente en los 60px extra,
         # y le damos un margen izquierdo
