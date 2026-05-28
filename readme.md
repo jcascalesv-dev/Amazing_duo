@@ -81,9 +81,11 @@ El proyecto comenzó con un diseño lineal, que probó ser insuficiente debido a
 
 # Qué funcionó bien y qué se puede mejorar:
 
-Éxito: La decisión de leer los datos de la estructura RAM del generador en las regeneraciones dinámicas (tecla '1') en lugar del disco, esquivando el cuello de botella del NFS. La implementación del Rate Limiting (pausas microscópicas de 0.0015s) salvó la pérdida de paquetes al bombardear la MiniLibX.
+Éxitos en el Motor Lógico: La decisión de diseñar el algoritmo de generación DFS (Depth-First Search) con un enfoque iterativo, utilizando una estructura de pila (deque) en lugar de depender de la recursividad clásica. Esto ha resultado ser un acierto absoluto, ya que permite calcular laberintos de proporciones masivas de forma instantánea sin arriesgarse a sufrir el temido RecursionError (límite de profundidad de llamadas) nativo de Python.
 
-Mejora futura: Al no permitir la MiniLibX operaciones de doble búfer (crear la textura entera en memoria antes de mandarla), el redibujado de celdas unitarias es dependiente de los tiempos del procesador gráfico.
+Éxitos en el Renderizado y Sistemas: La estabilización del motor gráfico frente a las desincronizaciones de X11 en los ordenadores de la escuela. La implementación de una estrategia de Rate Limiting (aplicando micropausas de 0.0015s en el bucle de dibujado) logró regular el flujo de peticiones, evitando el desbordamiento del socket de la MiniLibX y garantizando que ningún muro se perdiese por pérdida de paquetes durante la carga gráfica.
+
+Áreas de mejora futura: Dada la limitación técnica actual del wrapper de la MiniLibX, que no permite de forma sencilla aplicar un "doble búfer" puro (construir la imagen completa en la memoria RAM antes de mandarla a la pantalla de un solo golpe), el renderizado sigue atado a estampar los gráficos celda por celda. En proyectos futuros, acceder directamente a la matriz de bytes de la imagen en memoria para manipular píxeles individuales permitiría exprimir la velocidad de carga al máximo.
 
 # Herramientas específicas utilizadas:
 
@@ -102,5 +104,7 @@ Sets vs Listas: El renderizado en tiempo real usa objetos set para calcular coli
 Documentación oficial de la MiniLibX (Eventos y Hooks en C).
 
 Documentación de Python sobre ctypes y Foreign Function Interfaces (FFI).
+
+Búsquedas generales en google sobre algoritmos DFS y BFS.
 
 Uso de IA (Gemini): Se utilizó como asistente avanzado de "System Administration". Ayudó a diagnosticar condiciones de carrera en el servidor gráfico X11, entender el caché de atributos (acregmin) del sistema de archivos NFS de Ubuntu que corrompía las lecturas, y a perfilar la técnica de estrangulamiento de tráfico (Rate Limiting) en el socket de red para evitar el descarte de frames en la MiniLibX.
