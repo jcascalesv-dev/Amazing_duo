@@ -7,20 +7,16 @@ from render import render_maze
 
 
 def parse_config(filepath: str) -> dict[str, str]:
-    """Lee el archivo de configuración y extrae las variables clave-valor."""
     config: dict[str, str] = {}
 
     try:
         with open(filepath, 'r', encoding="utf-8") as f:
             for line in f:
-                # Quitamos espacios en blanco a los lados
                 line = line.strip()
-
-                # Ignoramos líneas vacías o comentarios
+                # We ignore blank lines or comments
                 if not line or line.startswith('#'):
                     continue
-
-                # Separamos por el primer '=' que encontremos
+                # We separate by the first '=' we find
                 if '=' in line:
                     key, value = line.split('=', 1)
                     config[key.strip()] = value.strip()
@@ -33,7 +29,6 @@ def parse_config(filepath: str) -> dict[str, str]:
 
 
 def parse_coords(coord_str: str) -> tuple[int, int]:
-    """Convierte un string 'x,y' en una tupla de enteros (x, y)."""
     try:
         x, y = map(int, coord_str.split(','))
         return x, y
@@ -44,23 +39,22 @@ def parse_coords(coord_str: str) -> tuple[int, int]:
 
 
 def parse_bool(bool_str: str) -> bool:
-    """Convierte un string ('true', 'false', '1', '0') a su valor booleano."""
     return bool_str.strip().lower() in ('true', '1')
 
 
 def main() -> None:
-    # 1. Validamos que se pase el archivo por argumento
+    # We validate that the file is passed as an argument
     if len(sys.argv) != 2:
         print("Usage: python3 main.py <config.txt>", file=sys.stderr)
         sys.exit()
 
     config_file = sys.argv[1]
 
-    # 2. Parseamos la configuración
+    # We parse the configuration
     config = parse_config(config_file)
     time.sleep(1.5)
 
-    # 3. Extraemos las variables (con validación básica)
+    # We extract the variables (with basic validation)
     try:
         width = int(config['WIDTH'])
         if width < 3:
@@ -76,8 +70,9 @@ def main() -> None:
         exit_pos = parse_coords(config['EXIT'])
         output_file = config['OUTPUT_FILE']
 
-        # Opcionales
+        # Optional
         seed = int(config['SEED']) if 'SEED' in config else None
+
         perfect = parse_bool(config['PERFECT']
                              ) if 'PERFECT' in config else True
 
@@ -90,7 +85,7 @@ def main() -> None:
               file=sys.stderr)
         sys.exit()
 
-    # 4. Instanciamos y ejecutamos el generador
+    # We instantiate and run the generator
     try:
         generator = MazeGenerator(
             width=width, height=height, perfect=perfect, seed=seed)
@@ -100,14 +95,13 @@ def main() -> None:
             filename=output_file, start=entry_pos, end=exit_pos)
         print(f"Maze successfully generated and saved to {output_file}")
 
-    except InvalidMazeConfig as e:  # Aquí capturamos tu InvalidMazeConfig
+    except InvalidMazeConfig as e:
         print(e, file=sys.stderr)
         sys.exit()
     except Exception as e:
-        # Captura de emergencia por si algo explota
         print(f"An unexpected error occurred: {e}", file=sys.stderr)
         sys.exit()
-    # 5. Arrancamos la maquinaria del renderizado.
+    # We start the rendering process.
     try:
         maze_coords: list[str] = get_maze_coords(output_file)
         time.sleep(0.2)

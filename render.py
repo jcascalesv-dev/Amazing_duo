@@ -15,7 +15,7 @@ MAX_SCREEN_HEIGHT = 1440
 MIN_SCREEN_WIDTH = 640
 MIN_SCREEN_HEIGHT = 480
 MENU_HEIGHT = 60
-# Códigos de teclado para Linux (X11)
+# Keyboard codes for Linux (X11)
 KEY_1 = 49
 KEY_2 = 50
 KEY_3 = 51
@@ -27,8 +27,6 @@ KEY_ESC = 65307
 def transform_directions(
     entrance: tuple[int, int], directions: str
 ) -> set[tuple[int, int]]:
-    """Transforma la cadena de direcciones en
-    un SET de coordenadas ultrarrápido."""
     x, y = entrance
     start: list[tuple[int, int]] = [(x, y)]
     for direction in directions:
@@ -48,30 +46,29 @@ def render_maze(
     dims: dict[str, int], maze_coords: list[str],
     way: dict[str, Any], perfect: bool, output_file: str
 ) -> None:
-    # 1. Pre-procesar el camino
+    # Pre-process the path
     directions_set = transform_directions(way["entrance"], way["directions"])
-    # 2. Calculamos el tamaño final de la ventana
+    # We calculate the final size of the window
     screen_width: int = dims["WIDTH"] * CELL_SIZE
     screen_height: int = (dims["HEIGHT"] * CELL_SIZE) + MENU_HEIGHT
-    # 3. Comprobamos que no excedemos los límites de resolución de pantalla
+    # We checked that we did not exceed the screen resolution limits.
     if screen_width > MAX_SCREEN_WIDTH or screen_height > MAX_SCREEN_HEIGHT:
-        print("Error Crítico: El laberinto es "
-              "demasiado grande para la interfaz gráfica "
-              f"({screen_width}x{screen_height} px). El límite seguro es "
-              f"{MAX_SCREEN_WIDTH}x{MAX_SCREEN_HEIGHT} px. "
-              "Por favor, use el modo de renderizado ASCII.", file=sys.stderr)
-        sys.exit(1)
+        print("Critical Error: The labyrinth is "
+              "too large for the graphical interface "
+              f"({screen_width}x{screen_height} px). The safe limit is "
+              f"{MAX_SCREEN_WIDTH}x{MAX_SCREEN_HEIGHT} px.", file=sys.stderr)
+        sys.exit()
     screen_width = max(screen_width, MIN_SCREEN_WIDTH)
     screen_height = max(screen_height, MIN_SCREEN_HEIGHT)
-    # 4. Inicializamos la librería gráfica
+    # We initialize the graphics library
     mlx_visual = Mlx()
-    # mlx_ptr nos da acceso para poder interacturar con la pantalla
+    # mlx_ptr gives us access to interact with the screen
     mlx_ptr = mlx_visual.mlx_init()
-    # creamos la ventana
+    # we create the window
     window_ptr: int = mlx_visual.mlx_new_window(
         mlx_ptr, screen_width, screen_height, "A-maze-ing MLX!"
     )
-    # 5. CARGAMOS TODAS LAS TEXTURAS en memoria (Muros + Interior)
+    # WE LOADED ALL TEXTURES into memory (Walls + Interior)
     walls_h = [
         mlx_visual.mlx_xpm_file_to_image(
             mlx_ptr, os.path.join(BASE_DIR, "textures", "wall_h.xpm"))[0],
@@ -99,8 +96,8 @@ def render_maze(
             mlx_ptr,
             os.path.join(BASE_DIR, "textures", "logo_42_yellow.xpm"))[0]
     ]
-    # Descartamos los args 2 y 3 del retorno de la funcion
-    # porque son las dimensiones de la img y no nos hacen falta
+    # We discard arguments 2 and 3 from the function's return value
+    # because they are the image dimensions and we don't need them
     img_start, _, _ = mlx_visual.mlx_xpm_file_to_image(
         mlx_ptr, os.path.join(BASE_DIR, "textures", "start.xpm")
     )
@@ -113,16 +110,15 @@ def render_maze(
     menu_text, _, _ = mlx_visual.mlx_xpm_file_to_image(
         mlx_ptr, os.path.join(BASE_DIR, "textures", "menu_text.xpm")
     )
-    # Le damos a la ventana un instante para mapearse
-    # y evitar el corte superior
+    # We give the window a moment to map itself and avoid the top cut
     show_path = False
-    color_index = 0  # (0=Rojo, 1=Verde, 2=Azul)
+    color_index = 0  # (0=Red, 1=Green, 2=Blue)
     logo_color_in = 0
     needs_redraw = True
 
-    # 6. BUCLE DE RENDERIZADO
+    # RENDERING LOOP
     def draw_frame() -> None:
-        # Limpiamos la pantalla antes de repintar
+        # Clean the screen before painting
         mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)
         for y, row in enumerate(maze_coords):
             for x, digit in enumerate(row):
@@ -130,12 +126,12 @@ def render_maze(
                 pixel_x = x * CELL_SIZE
                 pixel_y = y * CELL_SIZE
                 coord = (x, y)
-                # --- A. EL INTERIOR DE LA CELDA (Z-Index) ---
-                # Dibujamos esto PRIMERO para que los muros
-                # siempre queden por encima si hay roce
+                # THE INTERIOR OF THE CELL (Z-Index)
+                # We draw this FIRST so that the walls will always
+                # be on top if there is friction
                 if coord == way["entrance"]:
-                    # Centramos la imagen de 24x24 en
-                    # la celda de 32x32 (+4 píxeles)
+                    # We centered the 24x24 image in the
+                    # 32x32 cell (+4 pixels)
                     mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, img_start,
                         pixel_x + 1, pixel_y + 1
@@ -145,20 +141,20 @@ def render_maze(
                         mlx_ptr, window_ptr, img_exit, pixel_x + 1, pixel_y + 4
                     )
                 elif decimal == 15:
-                    # El bloque masivo del 42 rellena
-                    # todo el hueco exacto de 32x32
+                    # The massive 42 block fills
+                    # the entire 32x32 space
                     mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, logos[logo_color_in],
                         pixel_x, pixel_y
                     )
                 elif coord in directions_set and show_path:
-                    # Centramos el rastro del camino de 8x8
-                    # en la celda de 48x48 (+20 píxeles)
+                    # We center the 8x8 path trace
+                    # on the 48x48 cell (+20 pixels)
                     mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, img_path,
                         pixel_x + 20, pixel_y + 20
                     )
-                # --- B. LÓGICA DE MUROS INTERNOS (Norte y Oeste) ---
+                # INTERNAL WALL LOGIC (North and West)
                 if decimal & 1:
                     mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, walls_h[color_index],
@@ -169,7 +165,7 @@ def render_maze(
                         mlx_ptr, window_ptr, walls_v[color_index],
                         pixel_x, pixel_y
                     )
-                # --- C. CIERRE PERIMETRAL EXTERIOR ---
+                # EXTERIOR PERIMETER ENCLOSURE
                 if x == len(row) - 1 and (decimal & 2):
                     mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, walls_v[color_index],
@@ -181,16 +177,15 @@ def render_maze(
                         pixel_x, pixel_y + CELL_SIZE - WALL_THICKNESS
                     )
                 time.sleep(0.0015)
-        # 7. PINTAR EL TEXTO DEL MENÚ
-        # Lo centramos verticalmente en los 60px extra,
-        # y le damos un margen izquierdo
+        # PAINT THE MENU TEXT
+        # Center it vertically within the extra 60px,
+        # and give it a left margin
         mlx_visual.mlx_put_image_to_window(
             mlx_ptr, window_ptr, menu_text, 10, screen_height - 60
         )
 
-    #  8. HOOKS. Funciones de callback
+    #  HOOKS. Callback functions
     def key_hook(keycode: int, param: Any) -> int:
-        """Captura las pulsaciones del teclado."""
         nonlocal show_path, color_index, needs_redraw, logo_color_in
         if keycode == KEY_ESC or keycode == KEY_5:
             print("Closing maze window...")
@@ -217,10 +212,10 @@ def render_maze(
                 )
                 needs_redraw = True
             except InvalidMazeConfig as e:
-                print("[ERROR GENERACIÓN] Configuración inválida:"
+                print("[GENERATION ERROR] Invalid configuration:"
                       f"{e}", file=sys.stderr)
             except Exception as e:
-                print("[ERROR SISTEMA] Fallo inesperado al regenerar:"
+                print("[SYSTEM ERROR] Unexpected failure during regeneration:"
                       f"{e}", file=sys.stderr)
         elif keycode == KEY_2:
             show_path = not show_path
@@ -231,30 +226,25 @@ def render_maze(
         elif keycode == KEY_4:
             logo_color_in = logo_color_in + 1 if logo_color_in < 2 else 0
             needs_redraw = True
-        # La función de la librería espera que devolvamos un int
+        # The library function expects us to return an int
         return 0
 
     def close_hook(param: Any) -> int:
-        """Captura el clic en la 'X' de la ventana del sistema operativo."""
-        print("Cierre forzado desde la X de la ventana.")
+        print("Forced closure from the X of the window.")
         mlx_visual.mlx_destroy_window(mlx_ptr, window_ptr)
         os._exit(0)
 
     def background_loop(param: Any) -> int:
-        """Se ejecuta miles de veces por segundo en segundo plano."""
         nonlocal needs_redraw
         if needs_redraw:
-            #  mlx_visual.mlx_clear_window(mlx_ptr, window_ptr)
             draw_frame()
-            needs_redraw = False  # Bajamos la bandera tras pintar
+            needs_redraw = False
         return 0
-    # Conectamos las funciones a la ventana. Pasamos las funciones
-    # de callback para que las ejecute cuando el usuario pulse una tecla
+    # We connect the functions to the window. We pass the callback functions
+    # so they execute when the user presses a key
     mlx_visual.mlx_key_hook(window_ptr, key_hook, None)
-    # El evento 17 en X11 es 'DestroyNotify' (Clic en la X)
+    # Event 17 in X11 is 'DestroyNotify' (Click on the X)
     mlx_visual.mlx_hook(window_ptr, 33, 0, close_hook, None)
     mlx_visual.mlx_loop_hook(mlx_ptr, background_loop, None)
-    # 9. Primer renderizado inical
-    # draw_frame()
-    # 10. Mantener la ventana abierta (bucle infinito)
+    # Keep the window open (infinite loop)
     mlx_visual.mlx_loop(mlx_ptr)

@@ -1,11 +1,6 @@
 from typing import Any
 import sys
 
-"""
-Función para leer el fichero del laberinto y obtener
-las coordenadas para renderizar los muros.
-"""
-
 
 def get_maze_coords(maze_file: str) -> list[str]:
     maze_coords: list[str] = []
@@ -16,18 +11,12 @@ def get_maze_coords(maze_file: str) -> list[str]:
                 maze_coords.append(row.strip())
                 row = file.readline()
     except FileNotFoundError:
-        print("Error crítico: "
-              f"No se encuentra el archivo {maze_file}.", file=sys.stderr)
-        sys.exit(1)
+        print("Critical error: "
+              f"The file could not be found {maze_file}.", file=sys.stderr)
+        sys.exit()
     except Exception as e:
         raise Exception(f"Unexpected error reading the file: {str(e)}")
     return maze_coords
-
-
-"""
-Función para leer el fichero del laberinto y obtener los puntos de
-inicio y fin y las direcciones para recrear el camino.
-"""
 
 
 def get_way(maze_file: str) -> dict[str, Any]:

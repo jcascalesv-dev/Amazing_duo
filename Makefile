@@ -13,6 +13,9 @@ install:
 build:
 	$(PIP) install --upgrade build
 	$(PYTHON) -m build
+	mv dist/mazegen-*.whl .
+	mv dist/mazegen-*.tar.gz .
+	rm -rf dist
 
 # Ejecuta tu script de prueba
 run:
@@ -44,4 +47,4 @@ fclean: clean
 # Reinicia todo
 re: fclean all
 
-.PHONY: all install build run lint clean fclean re
+.PHONY: all install build run lint lint-strict clean fclean re

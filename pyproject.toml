@@ -1,19 +1,11 @@
 [tool.poetry]
-name = "a-maze-ing"
+name = "mazegen"
 version = "1.0.0"
 description = "A-Maze-ing maze generator and renderer"
-authors = ["jcascale y mjabalqu"]
-# Le indicamos a Poetry dónde está tu código
+authors = ["jcascale", "mjabalqu"]
+# readme = "README.md"
 packages = [
-    { include = "mazegen*" },
-    { include = "textures*" },
-    { include = "Makefile" },
-    { include = ".gitignore" },
-    { include = "pyproject.toml" },
-    { include = "config.txt" },
-    { include = "a_maze_ing.py" },
-    { include = "render.py" },
-    { include = "get_maze_data.py" }
+    { include = "mazegen" }
 ]
 
 [tool.poetry.dependencies]
