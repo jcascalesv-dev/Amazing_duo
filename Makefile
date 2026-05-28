@@ -1,6 +1,6 @@
 NAME = a_maze_ing
 PYTHON = python3
-PIP = pip
+PIP = pip3
 
 # Regla por defecto
 all: run

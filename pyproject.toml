@@ -6,6 +6,11 @@ authors = ["jcascale y mjabalqu"]
 # Le indicamos a Poetry dónde está tu código
 packages = [
     { include = "mazegen*" },
+    { include = "textures*" },
+    { include = "Makefile" },
+    { include = ".gitignore" },
+    { include = "pyproject.toml" },
+    { include = "config.txt" },
     { include = "a_maze_ing.py" },
     { include = "render.py" },
     { include = "get_maze_data.py" }
@@ -13,9 +18,6 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.10"
-
-[tool.poetry.scripts]
-play_maze = "a_maze_ing:main"
 
 [build-system]
 requires = ["poetry-core"]
