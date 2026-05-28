@@ -72,9 +72,9 @@ camino = generator.get_solution_path_string() # Retorna "E,S,S,E..."
 ## 6. Team and Project Management
 Roles del equipo:
 
-<jcascale>: Arquitectura del motor lógico, algoritmos matemáticos (DFS, BFS), gestión de bitwise para muros y estructura del paquete reutilizable.
+jcascale: Arquitectura del motor lógico, parseo de datos de entrada, algoritmos matemáticos (DFS, BFS), gestión de bitwise para muros y estructura del paquete reutilizable. Makefile y poetry.
 
-<mjabalqu>: Arquitectura de sistemas, puente ctypes con MiniLibX (C to Python), Event Loop de X11, gestión de I/O y texturización escalada.
+mjabalqu: Arquitectura de sistemas, puente ctypes con MiniLibX (C to Python), Event Loop de X11, gestión de I/O y texturización escalada. Readme.md.
 
 # Planificación y Evolución:
 El proyecto comenzó con un diseño lineal, que probó ser insuficiente debido a las condiciones de carrera del servidor gráfico (X11) y a la caché de lectura del disco de red (NFS) de la escuela. La evolución más crítica del proyecto fue refactorizar render.py hacia una arquitectura orientada a eventos (mlx_loop_hook).
