@@ -141,15 +141,14 @@ def render_maze(
                         mlx_ptr, window_ptr, img_exit, pixel_x + 1, pixel_y + 4
                     )
                 elif decimal == 15:
-                    # The massive 42 block fills
-                    # the entire 32x32 space
+                    # The massive 42 block fills the entire 32x32 space
                     mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, logos[logo_color_in],
                         pixel_x, pixel_y
                     )
                 elif coord in directions_set and show_path:
-                    # We center the 8x8 path trace
-                    # on the 48x48 cell (+20 pixels)
+                    # We center the 8x8 path trace on
+                    # the 48x48 cell (+20 pixels)
                     mlx_visual.mlx_put_image_to_window(
                         mlx_ptr, window_ptr, img_path,
                         pixel_x + 20, pixel_y + 20
@@ -178,8 +177,7 @@ def render_maze(
                     )
                 time.sleep(0.0015)
         # PAINT THE MENU TEXT
-        # Center it vertically within the extra 60px,
-        # and give it a left margin
+        # Center it vertically within the extra 60px, and give it a left margin
         mlx_visual.mlx_put_image_to_window(
             mlx_ptr, window_ptr, menu_text, 10, screen_height - 60
         )

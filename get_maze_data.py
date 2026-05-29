@@ -5,7 +5,7 @@ import sys
 def get_maze_coords(maze_file: str) -> list[str]:
     maze_coords: list[str] = []
     try:
-        with open(maze_file, "r") as file:
+        with open(maze_file, "r", encoding="utf-8") as file:
             row: str = file.readline()
             while row and row != "\n":
                 maze_coords.append(row.strip())
@@ -22,7 +22,7 @@ def get_maze_coords(maze_file: str) -> list[str]:
 def get_way(maze_file: str) -> dict[str, Any]:
     way: dict[str, Any] = {}
     try:
-        with open(maze_file, "r") as file:
+        with open(maze_file, "r", encoding="utf-8") as file:
             row: str = file.readline()
             while row and row != "\n":
                 row = file.readline()
