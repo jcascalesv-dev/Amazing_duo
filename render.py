@@ -241,7 +241,7 @@ def render_maze(
     # We connect the functions to the window. We pass the callback functions
     # so they execute when the user presses a key
     mlx_visual.mlx_key_hook(window_ptr, key_hook, None)
-    # Event 17 in X11 is 'DestroyNotify' (Click on the X)
+    # Event 33 in X11 is 'DestroyNotify' (Click on the X)
     mlx_visual.mlx_hook(window_ptr, 33, 0, close_hook, None)
     mlx_visual.mlx_loop_hook(mlx_ptr, background_loop, None)
     # Keep the window open (infinite loop)
